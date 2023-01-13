@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product market</title>
+    <style>
+        .table1  {
+            border: 1px solid black;
+            border-spacing: 0;
+        }
+        .table1 th {
+            border: 1px solid black;
+        }
+        .table1 td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<header th:parentProduct="${parentProduct}">
+    <h2 th:text="${parentProduct.title}"></h2>
+</header>
+<table class="table1">
+    <thead>
+    <tr>
+        <th>
+            <a th:href="@{/product(uuid=${parentProduct.uuid})}">shoe size</a>
+        </th>
+        <th>
+            <a th:href="@{/product(uuid=${parentProduct.uuid},sortBy='lowestAsk')}">lowest ask</a>
+        </th>
+        <th>
+            <a th:href="@{/product(uuid=${parentProduct.uuid},sortBy='numberOfAsks')}">number of asks</a>
+        </th>
+        <th>
+            <a th:href="@{/product(uuid=${parentProduct.uuid},sortBy='highestBid')}">highest bid</a>
+        </th>
+        <th>
+            <a th:href="@{/product(uuid=${parentProduct.uuid},sortBy='numberOfBids')}">number of bids</a>
+        </th>
+        <th>
+            <a th:href="@{/product(uuid=${parentProduct.uuid},sortBy='deadstockSold')}">deadstock sold</a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${childrenProducts}">
+        <td th:text="${product.shoeSize}"/>
+        <td th:text="${product.lowestAsk}"/>
+        <td th:text="${product.numberOfAsks}"/>
+        <td th:text="${product.highestBid}"/>
+        <td th:text="${product.numberOfBids}"/>
+        <td th:text="${product.deadstockSold}"/>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td th:text="${parentProduct.numberOfAsks}"/>
+        <td></td>
+        <td th:text="${parentProduct.numberOfBids}"/>
+        <td th:text="${parentProduct.deadstockSold}"/>
+    </tr>
+    </tbody>
+</table>
+<small><a th:href="@{/}">Go to searcher</a></small>
+</body>
+</html>
