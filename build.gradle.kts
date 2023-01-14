@@ -9,20 +9,21 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
 }
 
-tasks.withType<BootJar> {
+/*tasks.withType<BootJar> {
 	archiveFileName.set("sneakerboss-app.jar")
-}
+}*/
 
 extra["springCloudVersion"] = "2021.0.5"
 
 dependencies {
+	implementation(files("libs/sneakerboss-0.0.1.jar"))
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
