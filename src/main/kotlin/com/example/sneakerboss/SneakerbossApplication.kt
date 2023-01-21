@@ -8,7 +8,6 @@ import com.example.sneakerboss.productfetching.ProductFetcher
 import java.util.*
 
 @SpringBootApplication
-@EnableFeignClients
 class SneakerbossApplication
 
 fun main(args: Array<String>) {

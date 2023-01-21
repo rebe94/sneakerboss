@@ -1,8 +1,9 @@
 package com.example.sneakerboss.productfetching
 
-import com.example.sneakerboss.httpexecuter.HttpRequestExecuter
+import com.example.sneakerboss.currencyconverting.components.CurrencyCode
+import com.example.sneakerboss.httprequestexecuting.HttpRequestExecuter
 import com.example.sneakerboss.productfetching.components.Product
-import com.example.sneakerboss.productfetching.components.ProductFetchable
+import com.example.sneakerboss.productfetching.components.ProductParser
 import org.json.JSONException
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders
@@ -11,16 +12,19 @@ import java.net.URL
 import java.util.*
 
 @Service
-class ProductFetcher(private val httpRequestExecuter: HttpRequestExecuter) : ProductFetchable {
+class ProductFetcher(
+    private val httpRequestExecuter: HttpRequestExecuter,
+    private val productParser: ProductParser
+) {
 
     companion object {
         private const val FIND_PRODUCT_BASE_URL = "https://stockx.com/api/products"
-        private const val CURRENCY_CODE = "EUR"
+        val CURRENCY_CODE = CurrencyCode.EUR
         private const val COUNTRY = "PL"
     }
 
-    override fun findProductBy(uuid: UUID): Product? {
-        val uri = "$FIND_PRODUCT_BASE_URL/$uuid?includes=market&currency=$CURRENCY_CODE&country=$COUNTRY"
+    fun findProductBy(uuid: UUID): Product? {
+        val uri = "$FIND_PRODUCT_BASE_URL/$uuid?includes=market&currency=${CURRENCY_CODE.name}&country=$COUNTRY"
         val headers = getHeaders()
         val response = httpRequestExecuter.executeHttpGetRequest(uri, headers)
         val json = JSONObject(response.body)
@@ -60,79 +64,8 @@ class ProductFetcher(private val httpRequestExecuter: HttpRequestExecuter) : Pro
             null
         }
         return when (parentId) {
-            null -> parseToParentProduct(jsonObject)
-            else -> parseToChildrenProduct(jsonObject)
+            null -> productParser.parseToParentProduct(jsonObject)
+            else -> productParser.parseToChildrenProduct(jsonObject)
         }
-    }
-
-    private fun parseToParentProduct(jsonObject: JSONObject): Product {
-        val childrenObject = jsonObject.getJSONObject("children")
-        val children = parseChildrenToProductList(childrenObject)
-        return createProduct(
-            jsonObject = jsonObject,
-            children = children)
-    }
-
-    private fun parseToChildrenProduct(jsonObject: JSONObject): Product {
-        val parentId = try {
-            jsonObject.getString("parentId")
-        } catch (ex: JSONException) {
-            null
-        }
-        val shoeSize = try {
-            jsonObject.getString("shoeSize")
-        } catch (ex: JSONException) {
-            null
-        }
-        return createProduct(
-            jsonObject = jsonObject,
-            parentId = parentId,
-            shoeSize = shoeSize
-        )
-    }
-
-    private fun parseChildrenToProductList(json: JSONObject): List<Product> {
-        if (json.isEmpty) return emptyList()
-
-        val childrenProductList = mutableListOf<Product>()
-        for (key in json.keys()) {
-            val child = json.getJSONObject(key)
-            val parentId = child.getString("parentId")
-            val shoeSize = child.getString("shoeSize")
-            val childrenProduct = createProduct(child, parentId, shoeSize)
-            childrenProductList.add(childrenProduct)
-        }
-        return childrenProductList.toList()
-    }
-
-    private fun createProduct(
-        jsonObject: JSONObject,
-        parentId: String? = null,
-        shoeSize: String? = null,
-        children: List<Product>? = null
-    ): Product {
-        val media = jsonObject.getJSONObject("media")
-        val market = jsonObject.getJSONObject("market")
-        return Product(
-            uuid = UUID.fromString(jsonObject.getString("uuid")),
-            title = jsonObject.getString("title"),
-            brand = jsonObject.getString("brand"),
-            colorway = jsonObject.getString("colorway"),
-            styleId = jsonObject.getString("styleId"),
-            gender = jsonObject.getString("gender"),
-            releaseDate = jsonObject.getString("releaseDate"),
-            retailPrice = jsonObject.getInt("retailPrice"),
-            imageUrl = URL(media.getString("smallImageUrl")),
-            lowestAsk = market.getInt("lowestAsk"),
-            numberOfAsks = market.getInt("numberOfAsks"),
-            highestBid = market.getInt("highestBid"),
-            numberOfBids = market.getInt("numberOfBids"),
-            deadstockSold = market.getInt("deadstockSold"),
-            averageDeadstockPrice = market.getInt("averageDeadstockPrice"),
-            totalDollars = market.getInt("totalDollars"),
-            parentId = parentId,
-            shoeSize = shoeSize,
-            children = children
-        )
     }
 }

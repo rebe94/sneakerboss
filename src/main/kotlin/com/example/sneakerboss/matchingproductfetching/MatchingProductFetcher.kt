@@ -1,8 +1,7 @@
 package com.example.sneakerboss.matchingproductfetching
 
-import com.example.sneakerboss.httpexecuter.HttpRequestExecuter
+import com.example.sneakerboss.httprequestexecuting.HttpRequestExecuter
 import com.example.sneakerboss.matchingproductfetching.components.MatchingProduct
-import com.example.sneakerboss.matchingproductfetching.components.MatchingProductFetchable
 import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders
@@ -12,14 +11,14 @@ import java.util.*
 
 
 @Service
-class MatchingProductFetcher(private val httpRequestExecuter: HttpRequestExecuter) : MatchingProductFetchable {
+class MatchingProductFetcher(private val httpRequestExecuter: HttpRequestExecuter) {
 
     companion object {
         private const val SEARCH_PRODUCT_BASE_URL = "https://stockx.com/api/browse?_search="
         private const val LIMIT_FOUND_PRODUCTS = 10
     }
 
-    override fun searchProductBy(key: String): List<MatchingProduct> {
+    fun searchProductBy(key: String): List<MatchingProduct> {
         val keyWithoutWhitespaces = key.replace(" ", "+")
         val uri = "$SEARCH_PRODUCT_BASE_URL$keyWithoutWhitespaces}"
         val headers = getHeaders()
@@ -27,8 +26,7 @@ class MatchingProductFetcher(private val httpRequestExecuter: HttpRequestExecute
         val jsonResponse = JSONObject(response.body)
         val matchingProductJSONArray = jsonResponse.getJSONArray("Products")
         if (matchingProductJSONArray.isEmpty) return emptyList()
-        val matchingProducts = parseToMatchingProducts(matchingProductJSONArray)
-        return matchingProducts
+        return parseToMatchingProducts(matchingProductJSONArray)
     }
 
     private fun getHeaders(): HttpHeaders {

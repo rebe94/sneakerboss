@@ -34,6 +34,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
 	//implementation("com.fasterxml.jackson.core:jackson-core:2.14.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+	//implementation("org.slf4j:slf4j-api:2.0.6")
+
 }
 
 dependencyManagement {

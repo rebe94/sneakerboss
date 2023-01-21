@@ -22,5 +22,8 @@ data class Product(
     val totalDollars: Int,
     val parentId: String?,
     val shoeSize: String?,
-    val children: List<Product>?
+    val children: List<Product>?,
+    val askToBeFirst: Float,
+    val totalPayout: Float,
+    val totalPayoutPln: Float?
 )

@@ -1,11 +1,11 @@
-package com.example.sneakerboss.matchingproductfetching.components
+package com.example.sneakerboss.httprequestexecuting
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestTemplate
 
 @Configuration
-class MatchingProductFetcherConfig {
+class HttpRequestExecuterConfig {
 
     @Bean
     fun restTemplate(): RestTemplate {
