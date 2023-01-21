@@ -1,5 +1,6 @@
 package com.example.sneakerboss.productfetching
 
+import com.example.sneakerboss.productfetching.components.Product
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping

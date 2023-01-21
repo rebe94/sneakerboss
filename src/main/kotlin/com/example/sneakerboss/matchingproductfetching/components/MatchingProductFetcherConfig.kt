@@ -1,4 +1,4 @@
-package com.example.sneakerboss.matchingproductfetching
+package com.example.sneakerboss.matchingproductfetching.components
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

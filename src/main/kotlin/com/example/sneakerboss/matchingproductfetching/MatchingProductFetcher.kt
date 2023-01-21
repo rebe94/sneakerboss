@@ -1,6 +1,8 @@
 package com.example.sneakerboss.matchingproductfetching
 
 import com.example.sneakerboss.httpexecuter.HttpRequestExecuter
+import com.example.sneakerboss.matchingproductfetching.components.MatchingProduct
+import com.example.sneakerboss.matchingproductfetching.components.MatchingProductFetchable
 import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders

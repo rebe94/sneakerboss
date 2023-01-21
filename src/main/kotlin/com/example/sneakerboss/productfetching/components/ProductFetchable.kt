@@ -1,4 +1,4 @@
-package com.example.sneakerboss.productfetching
+package com.example.sneakerboss.productfetching.components
 
 import java.util.*
 

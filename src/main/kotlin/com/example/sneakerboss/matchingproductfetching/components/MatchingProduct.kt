@@ -1,4 +1,4 @@
-package com.example.sneakerboss.matchingproductfetching
+package com.example.sneakerboss.matchingproductfetching.components
 
 import java.net.URL
 import java.util.*

@@ -1,6 +1,8 @@
 package com.example.sneakerboss.productfetching
 
 import com.example.sneakerboss.httpexecuter.HttpRequestExecuter
+import com.example.sneakerboss.productfetching.components.Product
+import com.example.sneakerboss.productfetching.components.ProductFetchable
 import org.json.JSONException
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders
@@ -22,7 +24,6 @@ class ProductFetcher(private val httpRequestExecuter: HttpRequestExecuter) : Pro
         val headers = getHeaders()
         val response = httpRequestExecuter.executeHttpGetRequest(uri, headers)
         val json = JSONObject(response.body)
-
         val jsonProduct = try {
             json.getJSONObject("Product")
         } catch (ex: JSONException) {
