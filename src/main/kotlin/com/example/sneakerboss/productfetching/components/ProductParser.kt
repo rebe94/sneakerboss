@@ -72,7 +72,8 @@ class ProductParser(
         val media = jsonObject.getJSONObject("media")
         val market = jsonObject.getJSONObject("market")
         val lowestAsk = market.getInt("lowestAsk")
-        val totalPayout = priceCalculator.calculatePayout(lowestAsk.toFloat()).round(2)
+        val askToBeFirst = priceCalculator.calculateLowestAskToBeFirst(lowestAsk.toFloat())
+        val totalPayout = priceCalculator.calculatePayout(askToBeFirst)
         return Product(
             uuid = UUID.fromString(jsonObject.getString("uuid")),
             title = jsonObject.getString("title"),
@@ -93,8 +94,8 @@ class ProductParser(
             parentId = parentId,
             shoeSize = shoeSize,
             children = children,
-            askToBeFirst = priceCalculator.calculateLowestAskToBeFirst(lowestAsk.toFloat()).round(2),
-            totalPayout = totalPayout,
+            askToBeFirst = askToBeFirst.round(2),
+            totalPayout = totalPayout.round(2),
             totalPayoutPln = priceConverter.convertToPln(totalPayout, ProductFetcher.CURRENCY_CODE)?.round(2)
         )
     }
