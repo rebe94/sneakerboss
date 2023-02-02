@@ -47,6 +47,7 @@ class ProductFetcherController(private val productFetcher: ProductFetcher, priva
             "highestBid" -> childrenProducts?.sortedByDescending { it.highestBid }
             "numberOfBids" -> childrenProducts?.sortedByDescending { it.numberOfBids }
             "deadstockSold" -> childrenProducts?.sortedByDescending { it.deadstockSold }
+            "salesLast72Hours" -> childrenProducts?.sortedByDescending { it.salesLast72Hours }
             else -> childrenProducts?.sortedBy { it.shoeSize?.replace(Regex("[a-zA-Z]"), "")?.toDouble() }
         }
         page.addAttribute("parentProduct", product)
