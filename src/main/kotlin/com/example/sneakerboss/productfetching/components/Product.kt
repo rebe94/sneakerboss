@@ -18,6 +18,7 @@ data class Product(
     val highestBid: Int,
     val numberOfBids: Int,
     val deadstockSold: Int,
+    val salesLast72Hours: Int,
     val averageDeadstockPrice: Int,
     val totalDollars: Int,
     val parentId: String?,

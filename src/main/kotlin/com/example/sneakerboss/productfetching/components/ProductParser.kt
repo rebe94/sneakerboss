@@ -89,6 +89,7 @@ class ProductParser(
             highestBid = market.getInt("highestBid"),
             numberOfBids = market.getInt("numberOfBids"),
             deadstockSold = market.getInt("deadstockSold"),
+            salesLast72Hours = market.getInt("salesLast72Hours"),
             averageDeadstockPrice = market.getInt("averageDeadstockPrice"),
             totalDollars = market.getInt("totalDollars"),
             parentId = parentId,
