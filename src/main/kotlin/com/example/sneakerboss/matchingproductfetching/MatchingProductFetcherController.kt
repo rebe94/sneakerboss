@@ -31,7 +31,7 @@ class MatchingProductFetcherController(private val matchingProductFetcher: Match
             matchingProducts = matchingProductFetcher.searchProductBy(key)
         } catch (ex: HttpClientErrorException) {
             LOGGER.info("${ex.message}")
-            LOGGER.info("User redirected to resolve captcha")
+            LOGGER.info("User redirected to resolve captcha.")
             return captchaRedirector.getCaptchaRedirectingUrl()
         }
         page.addAttribute("matchingProducts", matchingProducts)
