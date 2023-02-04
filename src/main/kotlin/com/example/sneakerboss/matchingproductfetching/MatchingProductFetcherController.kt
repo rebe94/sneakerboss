@@ -30,6 +30,7 @@ class MatchingProductFetcherController(private val matchingProductFetcher: Match
         try {
             matchingProducts = matchingProductFetcher.searchProductBy(key)
         } catch (ex: HttpClientErrorException) {
+            LOGGER.info("${ex.message}")
             LOGGER.info("User redirected to resolve captcha")
             return captchaRedirector.getCaptchaRedirectingUrl()
         }
