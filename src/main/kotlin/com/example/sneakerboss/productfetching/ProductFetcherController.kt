@@ -1,7 +1,6 @@
 package com.example.sneakerboss.productfetching
 
 import com.example.sneakerboss.captchaverifing.CaptchaRedirector
-import com.example.sneakerboss.matchingproductfetching.MatchingProductFetcherController
 import com.example.sneakerboss.productfetching.components.Product
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
@@ -12,7 +11,10 @@ import org.springframework.web.client.HttpClientErrorException
 import java.util.*
 
 @Controller
-class ProductFetcherController(private val productFetcher: ProductFetcher, private val captchaRedirector: CaptchaRedirector) {
+class ProductFetcherController(
+    private val productFetcher: ProductFetcher,
+    private val captchaRedirector: CaptchaRedirector
+) {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(ProductFetcherController::class.java)
@@ -28,9 +30,8 @@ class ProductFetcherController(private val productFetcher: ProductFetcher, priva
         try {
             product = productFetcher.findProductBy(UUID.fromString(uuid))
         } catch (ex: HttpClientErrorException) {
-            LOGGER.info("${ex.message}")
-            LOGGER.info("User redirected to resolve captcha")
-            return captchaRedirector.getCaptchaRedirectingUrl()
+            LOGGER.info("User redirected to resolve captcha.")
+            return captchaRedirector.getHtmlWithCaptchaContent(page, ex.message)
         }
         val childrenProducts = product?.children
         addAttributes(page, product, sortBy, childrenProducts)

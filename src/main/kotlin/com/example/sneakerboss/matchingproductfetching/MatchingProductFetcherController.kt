@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.client.HttpClientErrorException
 
 @Controller
-class MatchingProductFetcherController(private val matchingProductFetcher: MatchingProductFetcher, private val captchaRedirector: CaptchaRedirector) {
+class MatchingProductFetcherController(
+    private val matchingProductFetcher: MatchingProductFetcher,
+    private val captchaRedirector: CaptchaRedirector
+) {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(MatchingProductFetcherController::class.java)
@@ -26,18 +29,15 @@ class MatchingProductFetcherController(private val matchingProductFetcher: Match
         @RequestParam key: String,
         page: Model
     ): String {
-        val matchingProducts:List<MatchingProduct>
+        val matchingProducts: List<MatchingProduct>
         try {
             matchingProducts = matchingProductFetcher.searchProductBy(key)
         } catch (ex: HttpClientErrorException) {
-            LOGGER.info("${ex.message}")
             LOGGER.info("User redirected to resolve captcha.")
-            val captchaContent = ex.message?.replace("<EOL>", "")
-            page.addAttribute("captchaContent", captchaContent)
-            return "resolvecaptcha.html"
+            return captchaRedirector.getHtmlWithCaptchaContent(page, ex.message)
         }
-        page.addAttribute("matchingProducts", matchingProducts)
 
+        page.addAttribute("matchingProducts", matchingProducts)
         return "matchingproductfetcher.html"
     }
 }
