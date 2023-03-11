@@ -1,4 +1,4 @@
-package com.example.sneakerboss.currencyconverting.components
+package com.example.sneakerboss.commons.productfetching.currencyconverting.components
 
 interface ExchangeRateProvider {
 

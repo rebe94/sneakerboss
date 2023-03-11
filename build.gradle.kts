@@ -36,7 +36,6 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
 	//implementation("org.slf4j:slf4j-api:2.0.6")
-
 }
 
 dependencyManagement {

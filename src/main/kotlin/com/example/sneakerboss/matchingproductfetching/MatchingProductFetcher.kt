@@ -1,32 +1,30 @@
 package com.example.sneakerboss.matchingproductfetching
 
-import com.example.sneakerboss.httprequestexecuting.HttpRequestExecuter
-import com.example.sneakerboss.matchingproductfetching.components.MatchingProduct
-import org.json.JSONArray
+import com.example.sneakerboss.commons.httprequestexecuting.HttpRequestExecuter
+import com.example.sneakerboss.matchingproductfetching.dto.MatchingProductDto
+import com.example.sneakerboss.matchingproductfetching.dto.MatchingProductParser
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Service
-import java.net.URL
-import java.util.*
 
 
 @Service
-class MatchingProductFetcher(private val httpRequestExecuter: HttpRequestExecuter) {
+class MatchingProductFetcher(private val httpRequestExecuter: HttpRequestExecuter,
+                             private val matchingProductParser: MatchingProductParser) {
 
     companion object {
         private const val SEARCH_PRODUCT_BASE_URL = "https://stockx.com/api/browse?_search="
-        private const val LIMIT_FOUND_PRODUCTS = 10
     }
 
-    fun searchProductBy(key: String): List<MatchingProduct> {
+    fun searchProductBy(key: String): List<MatchingProductDto> {
         val keyWithoutWhitespaces = key.replace(" ", "+")
         val uri = "$SEARCH_PRODUCT_BASE_URL$keyWithoutWhitespaces}"
         val headers = getHeaders()
         val response = httpRequestExecuter.executeHttpGetRequest(uri, headers)
         val jsonResponse = JSONObject(response.body)
-        val matchingProductJSONArray = jsonResponse.getJSONArray("Products")
-        if (matchingProductJSONArray.isEmpty) return emptyList()
-        return parseToMatchingProducts(matchingProductJSONArray)
+        val foundMatchingProductJSONArray = jsonResponse.getJSONArray("Products")
+        if (foundMatchingProductJSONArray.isEmpty) return emptyList()
+        return matchingProductParser.parseToMatchingProducts(foundMatchingProductJSONArray)
     }
 
     private fun getHeaders(): HttpHeaders {
@@ -49,30 +47,5 @@ class MatchingProductFetcher(private val httpRequestExecuter: HttpRequestExecute
         headers.add("If-None-Match", "W/esrx8z3zi34t97")
         headers.add("TE", "trailers")
         return headers
-    }
-
-    private fun parseToMatchingProducts(matchingProducts: JSONArray): List<MatchingProduct> {
-        val matchingProductsList = mutableListOf<MatchingProduct>()
-        val limit =
-            if (matchingProducts.length() < LIMIT_FOUND_PRODUCTS) matchingProducts.length() else LIMIT_FOUND_PRODUCTS
-        for (i in 0 until limit) {
-            val it: JSONObject = matchingProducts.getJSONObject(i)
-            val media = it.getJSONObject("media")
-            matchingProductsList.add(
-                MatchingProduct(
-                    uuid = UUID.fromString(it.getString("uuid")),
-                    title = it.getString("title"),
-                    brand = it.getString("brand"),
-                    category = it.getString("category"),
-                    colorway = it.getString("colorway"),
-                    styleId = it.getString("styleId"),
-                    gender = it.getString("gender"),
-                    releaseDate = it.getString("releaseDate"),
-                    retailPrice = it.getInt("retailPrice"),
-                    imageUrl = URL(media.getString("smallImageUrl"))
-                )
-            )
-        }
-        return matchingProductsList.toList()
     }
 }

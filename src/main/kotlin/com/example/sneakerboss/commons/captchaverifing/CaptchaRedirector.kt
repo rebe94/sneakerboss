@@ -1,4 +1,4 @@
-package com.example.sneakerboss.captchaverifing
+package com.example.sneakerboss.commons.captchaverifing
 
 import org.springframework.stereotype.Component
 import org.springframework.ui.Model

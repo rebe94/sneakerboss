@@ -1,9 +1,9 @@
-package com.example.sneakerboss.matchingproductfetching.components
+package com.example.sneakerboss.matchingproductfetching.dto
 
 import java.net.URL
 import java.util.*
 
-data class MatchingProduct(
+data class MatchingProductDto(
     val uuid: UUID,
     val title: String,
     val brand: String,

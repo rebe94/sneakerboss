@@ -34,7 +34,7 @@
     <tbody>
     <tr th:each="product : ${matchingProducts}">
         <td>
-            <a th:href="@{/product?uuid={productUuid} (productUuid=${product.uuid})}"
+            <a th:href="@{/products?uuid={productUuid} (productUuid=${product.uuid})}"
             <span th:text="${product.title}"></span>
             </a>
         </td>

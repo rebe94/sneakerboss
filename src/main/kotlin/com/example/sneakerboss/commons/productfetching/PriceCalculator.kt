@@ -1,4 +1,4 @@
-package com.example.sneakerboss.pricecalculating
+package com.example.sneakerboss.commons.productfetching
 
 import org.springframework.stereotype.Component
 
