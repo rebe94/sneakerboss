@@ -1,7 +1,7 @@
 package com.example.sneakerboss.matchingproductfetching
 
-import com.example.sneakerboss.captchaverifing.CaptchaRedirector
-import com.example.sneakerboss.matchingproductfetching.components.MatchingProduct
+import com.example.sneakerboss.commons.captchaverifing.CaptchaRedirector
+import com.example.sneakerboss.matchingproductfetching.dto.MatchingProductDto
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -29,15 +29,15 @@ class MatchingProductFetcherController(
         @RequestParam key: String,
         page: Model
     ): String {
-        val matchingProducts: List<MatchingProduct>
+        val matchingProductDtos: List<MatchingProductDto>
         try {
-            matchingProducts = matchingProductFetcher.searchProductBy(key)
+            matchingProductDtos = matchingProductFetcher.searchProductBy(key)
         } catch (ex: HttpClientErrorException) {
             LOGGER.info("User redirected to resolve captcha.")
             return captchaRedirector.getHtmlWithCaptchaContent(page, ex.message)
         }
 
-        page.addAttribute("matchingProducts", matchingProducts)
+        page.addAttribute("matchingProducts", matchingProductDtos)
         return "matchingproductfetcher.html"
     }
 }

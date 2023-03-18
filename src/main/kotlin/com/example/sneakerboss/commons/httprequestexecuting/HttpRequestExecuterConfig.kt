@@ -1,4 +1,4 @@
-package com.example.sneakerboss.httprequestexecuting
+package com.example.sneakerboss.commons.httprequestexecuting
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

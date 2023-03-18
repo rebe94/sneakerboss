@@ -1,4 +1,4 @@
-package com.example.sneakerboss.httprequestexecuting
+package com.example.sneakerboss.commons.httprequestexecuting
 
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

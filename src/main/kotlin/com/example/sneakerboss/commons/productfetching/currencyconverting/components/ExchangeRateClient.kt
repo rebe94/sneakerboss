@@ -1,6 +1,6 @@
-package com.example.sneakerboss.currencyconverting.components
+package com.example.sneakerboss.commons.productfetching.currencyconverting.components
 
-import com.example.sneakerboss.httprequestexecuting.HttpRequestExecuter
+import com.example.sneakerboss.commons.httprequestexecuting.HttpRequestExecuter
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity

@@ -1,20 +1,15 @@
-package com.example.sneakerboss.productfetching
+package com.example.sneakerboss.commons.productfetching
 
-import com.example.sneakerboss.currencyconverting.components.CurrencyCode
-import com.example.sneakerboss.httprequestexecuting.HttpRequestExecuter
-import com.example.sneakerboss.productfetching.components.Product
-import com.example.sneakerboss.productfetching.components.ProductParser
-import org.json.JSONException
+import com.example.sneakerboss.commons.productfetching.currencyconverting.components.CurrencyCode
+import com.example.sneakerboss.commons.httprequestexecuting.HttpRequestExecuter
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Service
-import java.net.URL
 import java.util.*
 
 @Service
 class ProductFetcher(
-    private val httpRequestExecuter: HttpRequestExecuter,
-    private val productParser: ProductParser
+    private val httpRequestExecuter: HttpRequestExecuter
 ) {
 
     companion object {
@@ -23,17 +18,12 @@ class ProductFetcher(
         private const val COUNTRY = "PL"
     }
 
-    fun findProductBy(uuid: UUID): Product? {
+    fun findProductBy(uuid: UUID): JSONObject? {
         val uri = "$FIND_PRODUCT_BASE_URL/$uuid?includes=market&currency=${CURRENCY_CODE.name}&country=$COUNTRY"
         val headers = getHeaders()
         val response = httpRequestExecuter.executeHttpGetRequest(uri, headers)
         val json = JSONObject(response.body)
-        val jsonProduct = try {
-            json.getJSONObject("Product")
-        } catch (ex: JSONException) {
-            return null
-        }
-        return parseToProductEntity(jsonProduct)
+        return json.optJSONObject("Product")
     }
 
     private fun getHeaders(): HttpHeaders {
@@ -55,17 +45,5 @@ class ProductFetcher(
         headers.add("If-None-Match", "W/yr7orbq44n56bw")
         headers.add("TE", "trailers")
         return headers
-    }
-
-    private fun parseToProductEntity(jsonObject: JSONObject): Product {
-        val parentId = try {
-            jsonObject.getString("parentId")
-        } catch (ex: JSONException) {
-            null
-        }
-        return when (parentId) {
-            null -> productParser.parseToParentProduct(jsonObject)
-            else -> productParser.parseToChildrenProduct(jsonObject)
-        }
     }
 }

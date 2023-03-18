@@ -1,7 +1,7 @@
-package com.example.sneakerboss.currencyconverting
+package com.example.sneakerboss.commons.productfetching.currencyconverting
 
-import com.example.sneakerboss.currencyconverting.components.CurrencyCode
-import com.example.sneakerboss.currencyconverting.components.ExchangeRateClient
+import com.example.sneakerboss.commons.productfetching.currencyconverting.components.CurrencyCode
+import com.example.sneakerboss.commons.productfetching.currencyconverting.components.ExchangeRateClient
 import org.springframework.stereotype.Service
 
 @Service
