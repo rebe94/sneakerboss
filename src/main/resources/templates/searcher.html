@@ -11,5 +11,17 @@
             <button type="submit">Search</button>
             </form>
         </p>
+       <!-- <form th:action="@{/oauth2/authorization/google}" method="get">
+            <input type="submit" value="Log in" />
+        </form>-->
+        <p th:text="${'hello ' + userName}"></p>
+        <form th:action="@{/oauth2/authorization/google}" method="get">
+            <button th:if="${!isUserLogged}" type="submit">Log in</button>
+        </form>
+        <a th:if="${isUserLogged}"></a>
+        <!--<form th:action="@{https://accounts.google.com/logout}" method="get">-->
+        <form th:action="@{/logout}" method="get">
+            <button th:if="${isUserLogged}" type="submit">Log out</button>
+        </form>
     </body>
 </html>
