@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product market</title>
+    <style>
+        .table1  {
+            border: 1px solid black;
+            border-spacing: 0;
+        }
+        .table1 th {
+            border: 1px solid black;
+        }
+        .table1 td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h2>My products</h2>
+</header>
+<table class="table1">
+    <thead>
+    <tr>
+        <th>
+            <a>number</a>
+        </th>
+        <th></th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='title')}">title</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='styleId')}">styleId</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='shoeSize')}">shoe size</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='releaseDate')}">releaseDate</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='retailPrice')}">retailPrice</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='lowestAsk')}">lowest ask</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='askToBeFirst')}">ask to be first</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='totalPayout')}">total payout</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='totalPayoutPln')}">total payout PLN</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='numberOfAsks')}">number of asks</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='highestBid')}">highest bid</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='numberOfBids')}">number of bids</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='deadstockSold')}">deadstock sold</a>
+        </th>
+        <th>
+            <a th:href="@{/userproducts(sortBy='salesLast72Hours')}">sales last 72h</a>
+        </th>
+        <th>image</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product, rowNumber : ${userProducts}">
+        <td th:text="${rowNumber.count}"/>
+        <td>
+            <form th:action="@{/userproducts/delete?userProductId={userProductId} (userProductId=${product.userProductId})}" method="post">
+                <button type="submit">delete</button>
+            </form>
+        </td>
+        <td>
+            <a th:href="@{/products?uuid={productUuid} (productUuid=${product.parentId})}"
+            <span th:text="${product.title}"></span>
+            </a>
+        </td>
+        <td th:text="${product.styleId}"/>
+        <td th:text="${product.shoeSize}"/>
+        <td th:text="${product.releaseDate}"/>
+        <td th:text="${product.retailPrice}"/>
+        <td th:text="${product.lowestAsk}"/>
+        <td th:text="${product.askToBeFirst}"/>
+        <td th:text="${product.totalPayout}"/>
+        <td th:text="${product.totalPayoutPln}"/>
+        <td th:text="${product.numberOfAsks}"/>
+        <td th:text="${product.highestBid}"/>
+        <td th:text="${product.numberOfBids}"/>
+        <td th:text="${product.deadstockSold}"/>
+        <td th:text="${product.salesLast72Hours}"/>
+        <td>
+            <img th:src="${product.imageUrl}" alt="${product.title}" width="10%" height="10%"/>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td th:text="${aggregation.retailPrice}"></td>
+        <td th:text="${aggregation.lowestAsk}"></td>
+        <td></td>
+        <td th:text="${aggregation.totalPayout}"></td>
+        <td th:text="${aggregation.totalPayoutPln}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<small><a th:href="@{/}">Go to searcher</a></small>
+</body>
+</html>

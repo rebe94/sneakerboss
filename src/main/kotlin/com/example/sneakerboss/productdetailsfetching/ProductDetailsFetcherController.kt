@@ -3,6 +3,8 @@ package com.example.sneakerboss.productdetailsfetching
 import com.example.sneakerboss.commons.captchaverifing.CaptchaRedirector
 import com.example.sneakerboss.productdetailsfetching.dto.ProductDetailsDto
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,6 +24,7 @@ class ProductDetailsFetcherController(
 
     @GetMapping("/products")
     private fun products(
+        @AuthenticationPrincipal oauth2User: OAuth2User?,
         @RequestParam uuid: String,
         @RequestParam(required = false) sortBy: String,
         page: Model
@@ -33,6 +36,7 @@ class ProductDetailsFetcherController(
             LOGGER.info("User redirected to resolve captcha.")
             return captchaRedirector.getHtmlWithCaptchaContent(page, ex.message)
         }
+        page.addAttribute("isUserLogged", oauth2User != null)
         addAttributes(page, productDetailsDto, sortBy)
 
         return "productfetcher.html"
