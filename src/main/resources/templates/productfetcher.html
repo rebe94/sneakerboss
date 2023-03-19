@@ -23,6 +23,7 @@
 <table class="table1">
     <thead>
     <tr>
+        <th></th>
         <th>
             <a th:href="@{/products(uuid=${parentProduct.uuid})}">shoe size</a>
         </th>
@@ -57,6 +58,11 @@
     </thead>
     <tbody>
     <tr th:each="product : ${childrenProducts}">
+        <td>
+            <form th:action="@{/userproducts/add?productUuid={productUuid} (productUuid=${product.uuid})}" method="post">
+                <button th:if="${isUserLogged}" type="submit">add</button>
+            </form>
+        </td>
         <td th:text="${product.shoeSize}"/>
         <td th:text="${product.lowestAsk}"/>
         <td th:text="${product.askToBeFirst}"/>
@@ -69,6 +75,7 @@
         <td th:text="${product.salesLast72Hours}"/>
     </tr>
     <tr>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
