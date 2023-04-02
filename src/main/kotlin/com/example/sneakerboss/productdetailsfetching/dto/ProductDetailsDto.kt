@@ -14,7 +14,7 @@ data class ProductDetailsDto(
     val parentId: String?,
     val shoeSize: String?,
     val children: List<ProductDetailsDto>?,
-    val askToBeFirst: Float,
+    val askToBeFirst: Int?,
     val totalPayout: Float,
     val totalPayoutPln: Float?
 )

@@ -7,6 +7,4 @@ import java.util.*
 interface UserProductRepository: MongoRepository<UserProduct, UUID> {
 
     fun findAllByUserId(userId: UUID): List<UserProduct>
-
-    //fun removeUserProduct(userId: UUID, productUuid: UUID): UserProduct?
 }

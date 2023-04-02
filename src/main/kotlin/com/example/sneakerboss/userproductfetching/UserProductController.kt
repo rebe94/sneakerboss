@@ -3,16 +3,19 @@ package com.example.sneakerboss.userproductfetching
 import com.example.sneakerboss.commons.captchaverifing.CaptchaRedirector
 import com.example.sneakerboss.extensions.round
 import com.example.sneakerboss.userproductfetching.dto.UserProductDto
+import com.example.sneakerboss.userproductfetching.dto.UserSettingDto
+import com.example.sneakerboss.usersettings.UserSettingService
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.ModelAndView
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -20,14 +23,15 @@ import javax.servlet.http.HttpServletRequest
 @Controller
 class UserProductController(
     private val userProductService: UserProductService,
-    private val captchaRedirector: CaptchaRedirector
+    private val captchaRedirector: CaptchaRedirector,
+    private val userSettingService: UserSettingService
 ) {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(UserProductController::class.java)
     }
 
-    @GetMapping("/userproducts")
+    @GetMapping("/user/products")
     private fun userProducts(
         @AuthenticationPrincipal oauth2User: OAuth2User?,
         @RequestParam(required = false) sortBy: String,
@@ -40,12 +44,15 @@ class UserProductController(
             LOGGER.info("User redirected to resolve captcha.")
             return captchaRedirector.getHtmlWithCaptchaContent(page, ex.message)
         }
+        val userSettings = userSettingService.getUserSettings(oauth2User?.attributes?.getValue("email").toString())
+        userSettings ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User settings not found")
         addAttributes(page, userProducts, sortBy)
+        page.addAttribute("currencyCode", userSettings.currencyCode)
 
-        return "userproductfetcher.html"
+        return "userproduct.html"
     }
 
-    @PostMapping("/userproducts/add")
+    @PostMapping("/user/products/add")
     private fun addUserProduct(
         @AuthenticationPrincipal oauth2User: OAuth2User?,
         @RequestParam productUuid: String,
@@ -58,7 +65,7 @@ class UserProductController(
         return ModelAndView("redirect:$referrer")
     }
 
-    @PostMapping("/userproducts/delete")
+    @PostMapping("/user/products/delete")
     private fun deleteUserProduct(
         @AuthenticationPrincipal oauth2User: OAuth2User?,
         @RequestParam userProductId: String,

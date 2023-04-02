@@ -3,26 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <title>Search product</title>
+    <style>
+        header {
+            background-color: #1a651a;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        form {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 70%;
+            margin-right: 10px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #006600;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .button-group button {
+            margin-left: 10px;
+        }
+
+        .hello {
+            margin-right: 10px;
+        }
+
+    </style>
 </head>
-    <body>
-        <p>
-            <form action="/search" method="get">
-            Keyword: <input type="text" name="key"><br/>
-            <button type="submit">Search</button>
-            </form>
-        </p>
-        <p th:text="${'hello ' + userName}"></p>
+<body>
+<header>
+    <h1>Sneaker Boss</h1>
+    <p>Welcome to sneaker boss manager</p>
+</header>
+<div class="container">
+    <div class="hello" th:text="${'hello ' + userName}">hello Guest</div>
+    <div class="button-group">
         <form th:action="@{/oauth2/authorization/google}" method="get">
             <button th:if="${!isUserLogged}" type="submit">Log in</button>
         </form>
-        <!--<a th:if="${isUserLogged}"></a>-->
-        <div style="display:flex;">
-            <form th:action="@{/logout}" method="get">
-                <button th:if="${isUserLogged}" type="submit">Log out</button>
-            </form>
-            <form th:action="@{/userproducts}" method="get">
-                <button th:if="${isUserLogged}" type="submit">Show my products</button>
-            </form>
-        </div>
-    </body>
+        <form th:action="@{/logout}" method="get">
+            <button th:if="${isUserLogged}" type="submit">Log out</button>
+        </form>
+        <form th:action="@{/user/products}" method="get">
+
+            <button th:if="${isUserLogged}" type="submit">Show my products</button>
+        </form>
+        <form th:action="@{/user/settings}" method="get">
+            <button th:if="${isUserLogged}" type="submit">Settings</button>
+        </form>
+    </div>
+    <form action="/search" method="get" style="display: flex;">
+        <label for="search-input" style="margin-right: 10px;">Keyword:</label>
+        <input type="text" id="search-input" name="key" style="margin-right: 10px;">
+        <button type="submit">Find</button>
+    </form>
+</div>
+</body>
 </html>

@@ -25,16 +25,16 @@
     <tr>
         <th></th>
         <th>
-            <a th:href="@{/products(uuid=${parentProduct.uuid})}">shoe size</a>
+            <a th:href="@{/products(uuid=${parentProduct.uuid})}">shoe size US</a>
         </th>
         <th>
-            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='lowestAsk')}">lowest ask</a>
+            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='lowestAsk')}" th:text="'lowestAsk ' + ${currencyCode}">lowestAsk</a>
         </th>
         <th>
-            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='askToBeFirst')}">ask to be first</a>
+            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='askToBeFirst')}" th:text="'askToBeFirst ' + ${currencyCode}">askToBeFirst</a>
         </th>
         <th>
-            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='totalPayout')}">total payout</a>
+            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='totalPayout')}" th:text="'totalPayout ' + ${currencyCode}">totalPayout</a>
         </th>
         <th>
             <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='totalPayoutPln')}">total payout PLN</a>
@@ -43,7 +43,7 @@
             <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='numberOfAsks')}">number of asks</a>
         </th>
         <th>
-            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='highestBid')}">highest bid</a>
+            <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='highestBid')}" th:text="'highestBid ' + ${currencyCode}">highestBid</a>
         </th>
         <th>
             <a th:href="@{/products(uuid=${parentProduct.uuid},sortBy='numberOfBids')}">number of bids</a>
@@ -59,7 +59,7 @@
     <tbody>
     <tr th:each="product : ${childrenProducts}">
         <td>
-            <form th:action="@{/userproducts/add?productUuid={productUuid} (productUuid=${product.uuid})}" method="post">
+            <form th:action="@{/user/products/add?productUuid={productUuid} (productUuid=${product.uuid})}" method="post">
                 <button th:if="${isUserLogged}" type="submit">add</button>
             </form>
         </td>
@@ -89,6 +89,6 @@
     </tr>
     </tbody>
 </table>
-<small><a th:href="@{/}">Go to searcher</a></small>
+<small><a th:href="@{/}">Go to homepage</a></small>
 </body>
 </html>

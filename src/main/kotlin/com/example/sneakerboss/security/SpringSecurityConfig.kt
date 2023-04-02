@@ -12,7 +12,8 @@ class SpringSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity
             .authorizeRequests()
-            .antMatchers("/userproducts").hasAnyRole("USER")
+            .antMatchers("/user/**").authenticated()
+            //.antMatchers("//**").hasAnyRole("USER")
             //.anyRequest().authenticated()
             .and()
             .oauth2Login()

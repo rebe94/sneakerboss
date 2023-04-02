@@ -1,7 +1,8 @@
 package com.example.sneakerboss.commons.productfetching
 
-import com.example.sneakerboss.commons.productfetching.currencyconverting.components.CurrencyCode
 import com.example.sneakerboss.commons.httprequestexecuting.HttpRequestExecuter
+import com.example.sneakerboss.commons.productfetching.currencyconverting.components.CurrencyCode
+import com.example.sneakerboss.commons.productfetching.currencyconverting.components.Region
 import org.json.JSONObject
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Service
@@ -14,14 +15,12 @@ class ProductFetcher(
 
     companion object {
         private const val FIND_PRODUCT_BASE_URL = "https://stockx.com/api/products"
-        val CURRENCY_CODE = CurrencyCode.EUR
-        private const val COUNTRY = "PL"
     }
 
-    fun findProductBy(uuid: UUID): JSONObject? {
-        val uri = "$FIND_PRODUCT_BASE_URL/$uuid?includes=market&currency=${CURRENCY_CODE.name}&country=$COUNTRY"
+    fun findProductBy(uuid: UUID, currencyCode: CurrencyCode, region: Region): JSONObject? {
+        val uri = "$FIND_PRODUCT_BASE_URL/$uuid?includes=market&currency=${currencyCode.name}&country=${region.name}"
         val headers = getHeaders()
-        val response = httpRequestExecuter.executeHttpGetRequest(uri, headers)
+        val response = httpRequestExecuter.executeGetRequest(uri, headers)
         val json = JSONObject(response.body)
         return json.optJSONObject("Product")
     }

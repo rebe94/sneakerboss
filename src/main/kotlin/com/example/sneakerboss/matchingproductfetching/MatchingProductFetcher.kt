@@ -20,7 +20,7 @@ class MatchingProductFetcher(private val httpRequestExecuter: HttpRequestExecute
         val keyWithoutWhitespaces = key.replace(" ", "+")
         val uri = "$SEARCH_PRODUCT_BASE_URL$keyWithoutWhitespaces}"
         val headers = getHeaders()
-        val response = httpRequestExecuter.executeHttpGetRequest(uri, headers)
+        val response = httpRequestExecuter.executeGetRequest(uri, headers)
         val jsonResponse = JSONObject(response.body)
         val foundMatchingProductJSONArray = jsonResponse.getJSONArray("Products")
         if (foundMatchingProductJSONArray.isEmpty) return emptyList()

@@ -44,6 +44,6 @@ class MatchingProductFetcherController(
         }
 
         page.addAttribute("matchingProducts", matchingProductDtos)
-        return "matchingproductfetcher.html"
+        return "matchingproduct.html"
     }
 }

@@ -11,14 +11,20 @@ import org.springframework.web.client.exchange
 @Component
 class HttpRequestExecuter(private val restTemplate: RestTemplate) {
 
-    fun executeHttpGetRequest(uri: String, headers: HttpHeaders): ResponseEntity<String> {
-        val response: ResponseEntity<String> =
-            restTemplate.exchange(
-                uri,
-                HttpMethod.GET,
-                HttpEntity<HttpHeaders>(headers),
-                String()
-            )
-        return response
+    fun executeGetRequest(uri: String, headers: HttpHeaders): ResponseEntity<String> = restTemplate.exchange(
+        uri,
+        HttpMethod.GET,
+        HttpEntity<HttpHeaders>(headers),
+        String()
+    )
+
+    fun executePostRequest(uri: String, headers: HttpHeaders, requestBody: String): ResponseEntity<String> {
+        val httpEntity = HttpEntity(requestBody, headers)
+        return restTemplate.exchange(
+            uri,
+            HttpMethod.POST,
+            httpEntity,
+            String()
+        )
     }
 }

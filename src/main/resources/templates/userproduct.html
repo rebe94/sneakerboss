@@ -28,46 +28,46 @@
         </th>
         <th></th>
         <th>
-            <a th:href="@{/userproducts(sortBy='title')}">title</a>
+            <a th:href="@{/user/products(sortBy='title')}">title</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='styleId')}">styleId</a>
+            <a th:href="@{/user/products(sortBy='styleId')}">styleId</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='shoeSize')}">shoe size</a>
+            <a th:href="@{/user/products(sortBy='shoeSize')}">shoe size US</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='releaseDate')}">releaseDate</a>
+            <a th:href="@{/user/products(sortBy='releaseDate')}">releaseDate</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='retailPrice')}">retailPrice</a>
+            <a th:href="@{/user/products(sortBy='retailPrice')}" th:text="'retailPrice ' + ${currencyCode}">retailPrice</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='lowestAsk')}">lowest ask</a>
+            <a th:href="@{/user/products(sortBy='lowestAsk')}" th:text="'lowestAsk ' + ${currencyCode}">lowestAsk</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='askToBeFirst')}">ask to be first</a>
+            <a th:href="@{/user/products(sortBy='askToBeFirst')}" th:text="'askToBeFirst ' + ${currencyCode}">askToBeFirst</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='totalPayout')}">total payout</a>
+            <a th:href="@{/user/products(sortBy='totalPayout')}" th:text="'totalPayout ' + ${currencyCode}">totalPayout</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='totalPayoutPln')}">total payout PLN</a>
+            <a th:href="@{/user/products(sortBy='totalPayoutPln')}">total payout PLN</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='numberOfAsks')}">number of asks</a>
+            <a th:href="@{/user/products(sortBy='numberOfAsks')}">number of asks</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='highestBid')}">highest bid</a>
+            <a th:href="@{/user/products(sortBy='highestBid')}" th:text="'highestBid ' + ${currencyCode}">highestBid</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='numberOfBids')}">number of bids</a>
+            <a th:href="@{/user/products(sortBy='numberOfBids')}">number of bids</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='deadstockSold')}">deadstock sold</a>
+            <a th:href="@{/user/products(sortBy='deadstockSold')}">deadstock sold</a>
         </th>
         <th>
-            <a th:href="@{/userproducts(sortBy='salesLast72Hours')}">sales last 72h</a>
+            <a th:href="@{/user/products(sortBy='salesLast72Hours')}">sales last 72h</a>
         </th>
         <th>image</th>
     </tr>
@@ -76,7 +76,7 @@
     <tr th:each="product, rowNumber : ${userProducts}">
         <td th:text="${rowNumber.count}"/>
         <td>
-            <form th:action="@{/userproducts/delete?userProductId={userProductId} (userProductId=${product.userProductId})}" method="post">
+            <form th:action="@{/user/products/delete?userProductId={userProductId} (userProductId=${product.userProductId})}" method="post">
                 <button type="submit">delete</button>
             </form>
         </td>
@@ -124,6 +124,6 @@
     </tr>
     </tbody>
 </table>
-<small><a th:href="@{/}">Go to searcher</a></small>
+<small><a th:href="@{/}">Go to homepage</a></small>
 </body>
 </html>

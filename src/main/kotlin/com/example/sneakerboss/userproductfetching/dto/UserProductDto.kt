@@ -22,7 +22,7 @@ data class UserProductDto(
     val salesLast72Hours: Int,
     val parentId: String,
     val shoeSize: String,
-    val askToBeFirst: Float,
+    val askToBeFirst: Int?,
     val totalPayout: Float,
     val totalPayoutPln: Float?
 )
