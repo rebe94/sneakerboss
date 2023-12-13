@@ -16,7 +16,7 @@ class AskToBeFirstFetcher(
 ) {
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(AskToBeFirstFetcher::class.java)
+        private val LOGGER = LoggerFactory.getLogger(this::class.java)
         private const val STOCKX_API_BASE_URL = "https://stockx.com/api/p/e"
     }
 
@@ -84,9 +84,7 @@ class AskToBeFirstFetcher(
     }
 
     private fun extractAskToBeFirstValue(response: ResponseEntity<String>): Int {
-        val json = JSONObject(response.body)
-        val earnMore = json.optJSONObject("data")?.optJSONObject("variant")?.optJSONObject("pricingGuidance")
+        return JSONObject(response.body).optJSONObject("data")?.optJSONObject("variant")?.optJSONObject("pricingGuidance")
             ?.optJSONObject("sellingGuidance")?.optInt("earnMore") ?: 0
-        return earnMore
     }
 }

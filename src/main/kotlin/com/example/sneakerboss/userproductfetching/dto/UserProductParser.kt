@@ -3,9 +3,10 @@ package com.example.sneakerboss.userproductfetching.dto
 import com.example.sneakerboss.commons.productfetching.AskToBeFirstFetcher
 import com.example.sneakerboss.commons.productfetching.PriceCalculator
 import com.example.sneakerboss.commons.productfetching.currencyconverting.PriceConverter
-import com.example.sneakerboss.commons.productfetching.currencyconverting.components.CurrencyCode
-import com.example.sneakerboss.commons.productfetching.currencyconverting.components.Region
+import com.example.sneakerboss.extensions.at
 import com.example.sneakerboss.extensions.round
+import com.example.sneakerboss.matchingproductfetching.MatchingProductFetcher
+import com.example.sneakerboss.productdetailsfetching.dto.ProductDetailsParser
 import org.json.JSONObject
 import org.springframework.stereotype.Component
 import java.net.URL
@@ -15,43 +16,50 @@ import java.util.*
 class UserProductParser(
     private val priceConverter: PriceConverter,
     private val priceCalculator: PriceCalculator,
-    private val askToBeFirstFetcher: AskToBeFirstFetcher
+    private val askToBeFirstFetcher: AskToBeFirstFetcher,
+    private val matchingProductFetcher: MatchingProductFetcher,
+    private val productDetailsParser: ProductDetailsParser
 ) {
     fun parseToUserProductDto(
-        jsonObject: JSONObject,
+        productMarketDataJson: JSONObject,
         userProductId: UUID,
-        currencyCode: CurrencyCode,
-        region: Region,
-        transactionFeePercentage: Float
+        shoeVariantUuid: UUID,
+        userSettingDto: UserSettingDto
     ): UserProductDto {
-        val productUuid = UUID.fromString(jsonObject.optString("uuid"))
-        val media = jsonObject.getJSONObject("media")
-        val market = jsonObject.getJSONObject("market")
-        val lowestAsk = market.getInt("lowestAsk")
-        val askToBeFirst = askToBeFirstFetcher.getAskToBeFirst(productUuid, currencyCode, region)
-        val totalPayout = priceCalculator.calculatePayout(askToBeFirst.toFloat(), transactionFeePercentage)
+        val shoeVariant = productDetailsParser.getSizeVariants(productMarketDataJson, userSettingDto)
+            .find { it.uuid == shoeVariantUuid }
+        val lowestAsk = shoeVariant?.lowestAsk
+        val askToBeFirst =
+            askToBeFirstFetcher.getAskToBeFirst(shoeVariantUuid, userSettingDto.currencyCode, userSettingDto.region)
+        val totalPayout =
+            priceCalculator.calculatePayout(askToBeFirst.toFloat(), userSettingDto.sellerLevel.transactionFeePercentage)
+
+        val productUrlKey = productMarketDataJson.optString("urlKey")
+        val parentProductInfo = matchingProductFetcher.searchProductBy(productUrlKey)
+        val matchingProductDto = parentProductInfo.find { it.urlKey == productUrlKey }
+
         return UserProductDto(
             userProductId = userProductId,
-            uuid = productUuid,
-            title = jsonObject.optString("title"),
-            brand = jsonObject.optString("brand"),
-            colorway = jsonObject.optString("colorway"),
-            styleId = jsonObject.optString("styleId"),
-            gender = jsonObject.optString("gender"),
-            releaseDate = jsonObject.optString("releaseDate"),
-            retailPrice = jsonObject.optInt("retailPrice"),
-            imageUrl = URL(media.optString("smallImageUrl")),
-            lowestAsk = lowestAsk,
-            numberOfAsks = market.optInt("numberOfAsks"),
-            highestBid = market.optInt("highestBid"),
-            numberOfBids = market.optInt("numberOfBids"),
-            deadstockSold = market.optInt("deadstockSold"),
-            salesLast72Hours = market.optInt("salesLast72Hours"),
-            parentId = jsonObject.optString("parentId"),
-            shoeSize = jsonObject.optString("shoeSize"),
+            parentUuid = UUID.fromString(productMarketDataJson.optString("id")),
+            shoeVariantUuid = shoeVariantUuid,
+            shoeSize = shoeVariant?.size ?: "",
+            title = productMarketDataJson.optString("title"),
+            brand = productMarketDataJson.optString("brand"),
+            numberOfAsks = shoeVariant?.numberOfAsks ?: -1,
+            numberOfBids = shoeVariant?.numberOfBids ?: -1,
+            colorway = matchingProductDto?.colorway ?: "",
+            styleId = productMarketDataJson.optString("styleId"),
+            gender = productMarketDataJson.optString("gender"),
+            highestBid = shoeVariant?.highestBid ?: -1,
+            releaseDate = matchingProductDto?.releaseDate ?: "",
+            retailPrice = matchingProductDto?.retailPrice ?: -1,
+            imageUrl = URL(productMarketDataJson.at("media").optString("imageUrl")),
+            lowestAsk = lowestAsk ?: -1,
+            deadstockSold = shoeVariant?.deadstockSold ?: -1,
+            salesLast72Hours = shoeVariant?.salesLast72Hours ?: -1,
             askToBeFirst = askToBeFirst,
             totalPayout = totalPayout.round(2),
-            totalPayoutPln = priceConverter.convertToPln(totalPayout, currencyCode)?.round(2)
+            totalPayoutPln = priceConverter.convertToPln(totalPayout, userSettingDto.currencyCode)?.round(2)
         )
     }
 }

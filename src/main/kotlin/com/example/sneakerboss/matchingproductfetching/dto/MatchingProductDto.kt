@@ -5,6 +5,7 @@ import java.util.*
 
 data class MatchingProductDto(
     val uuid: UUID,
+    val urlKey: String,
     val title: String,
     val brand: String,
     val category: String,

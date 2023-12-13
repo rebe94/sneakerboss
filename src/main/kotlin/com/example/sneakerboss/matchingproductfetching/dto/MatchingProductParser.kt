@@ -7,7 +7,7 @@ import java.net.URL
 import java.util.*
 
 @Component
-class MatchingProductParser() {
+class MatchingProductParser {
 
     companion object {
         private const val LIMIT_FOUND_PRODUCTS = 10
@@ -23,6 +23,7 @@ class MatchingProductParser() {
             matchingProductsListDto.add(
                 MatchingProductDto(
                     uuid = UUID.fromString(it.optString("uuid")),
+                    urlKey = it.optString("urlKey"),
                     title = it.optString("title"),
                     brand = it.optString("brand"),
                     category = it.optString("category"),

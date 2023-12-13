@@ -3,6 +3,7 @@ package com.example.sneakerboss.productdetailsfetching.dto
 import com.example.sneakerboss.commons.productfetching.AskToBeFirstFetcher
 import com.example.sneakerboss.commons.productfetching.PriceCalculator
 import com.example.sneakerboss.commons.productfetching.currencyconverting.PriceConverter
+import com.example.sneakerboss.extensions.at
 import com.example.sneakerboss.extensions.round
 import com.example.sneakerboss.userproductfetching.dto.UserSettingDto
 import org.json.JSONObject
@@ -12,87 +13,59 @@ import java.util.*
 @Component
 class ProductDetailsParser(
     private val priceConverter: PriceConverter,
-    private val priceCalculator: PriceCalculator,
-    private val askToBeFirstFetcher: AskToBeFirstFetcher
+    private val priceCalculator: PriceCalculator
 ) {
 
-    companion object {
-        private const val PARENT_ID_KEY = "parentId"
-        private const val SHOE_SIZE_KEY = "shoeSize"
-        private const val CHILDREN_KEY = "children"
-    }
-
-    fun parseToParentProductDetails(jsonObject: JSONObject, userSettingDto: UserSettingDto): ProductDetailsDto {
-        val childrenObject = jsonObject.getJSONObject(CHILDREN_KEY)
-        val children = parseChildrenToProductDetailsList(childrenObject, userSettingDto)
-        return createProductDetails(
-            jsonObject = jsonObject,
-            children = children,
-            userSettingDto = userSettingDto
-        )
-    }
-
-    fun parseToChildrenProductDetails(jsonObject: JSONObject, userSettingDto: UserSettingDto): ProductDetailsDto {
-        val parentId = jsonObject.optString(PARENT_ID_KEY)
-        val shoeSize = jsonObject.optString(SHOE_SIZE_KEY)
-        return createProductDetails(
-            jsonObject = jsonObject,
-            parentId = parentId,
-            shoeSize = shoeSize,
-            userSettingDto = userSettingDto
-        )
-    }
-
-    private fun parseChildrenToProductDetailsList(
-        json: JSONObject,
-        userSettingDto: UserSettingDto
-    ): List<ProductDetailsDto> {
-        if (json.isEmpty) return emptyList()
-
-        val childrenProductListDto = mutableListOf<ProductDetailsDto>()
-        for (key in json.keys()) {
-            val child = json.getJSONObject(key)
-            val parentId = child.getString(PARENT_ID_KEY)
-            val shoeSize = child.getString(SHOE_SIZE_KEY)
-            val childrenProduct = createProductDetails(
-                jsonObject = child,
-                parentId = parentId,
-                shoeSize = shoeSize,
-                userSettingDto = userSettingDto
-            )
-            childrenProductListDto.add(childrenProduct)
-        }
-        return childrenProductListDto.toList()
-    }
-
-    private fun createProductDetails(
-        jsonObject: JSONObject,
-        parentId: String? = null,
-        shoeSize: String? = null,
-        children: List<ProductDetailsDto>? = null,
-        userSettingDto: UserSettingDto
-    ): ProductDetailsDto {
-        val productUuid = UUID.fromString(jsonObject.optString("uuid"))
-        val market = jsonObject.getJSONObject("market")
-        val lowestAsk = market.getInt("lowestAsk")
-        //val askToBeFirst = priceCalculator.calculateLowestAskToBeFirst(lowestAsk.toFloat())
-        val askToBeFirst = askToBeFirstFetcher.getAskToBeFirst(productUuid, userSettingDto.currencyCode, userSettingDto.region)
-        val totalPayout = priceCalculator.calculatePayout(askToBeFirst.toFloat(), userSettingDto.sellerLevel.transactionFeePercentage)
+    fun parse(json: JSONObject, userSettingDto: UserSettingDto): ProductDetailsDto {
+        val productUuid = UUID.fromString(json.optString("id"))
+        val market = json.at("market")
+        val state = market.at("state")
         return ProductDetailsDto(
             uuid = productUuid,
-            title = jsonObject.optString("title"),
-            lowestAsk = lowestAsk,
-            numberOfAsks = market.optInt("numberOfAsks"),
-            highestBid = market.optInt("highestBid"),
-            numberOfBids = market.optInt("numberOfBids"),
-            deadstockSold = market.optInt("deadstockSold"),
-            salesLast72Hours = market.optInt("salesLast72Hours"),
-            parentId = parentId,
-            shoeSize = shoeSize,
-            children = children,
-            askToBeFirst = askToBeFirst,
-            totalPayout = totalPayout.round(2),
-            totalPayoutPln = priceConverter.convertToPln(totalPayout, userSettingDto.currencyCode)?.round(2)
+            title = json.getString("title"),
+            numberOfAsks = state.optInt("numberOfBids"),
+            numberOfBids = state.optInt("numberOfAsks"),
+            deadstockSold = market.at("deadStock").optInt("sold"),
+            shoeVariants = getSizeVariants(json, userSettingDto)
         )
+    }
+
+    fun getSizeVariants(jsonObject: JSONObject, userSettingDto: UserSettingDto): List<ShoeVariant> {
+        val shoeVariants = mutableListOf<ShoeVariant>()
+
+        val jsonArray = jsonObject.getJSONArray("variants")
+        (0 until jsonArray.length()).forEach {
+            val variant = jsonArray.getJSONObject(it)
+            val market = variant.at("market")
+            val bidAskData = market.at("bidAskData")
+            val size = bidAskData.optString("highestBidSize")
+            if (size.isBlank()) return@forEach
+            val state = market.at("state")
+            val uuid = UUID.fromString(variant.getString("id"))
+            val askToBeFirst = variant.at("pricingGuidance").at("sellingGuidance").optInt("earnMore")
+            //askToBeFirstFetcher.getAskToBeFirst(uuid, userSettingDto.currencyCode, userSettingDto.region)
+            val totalPayout = priceCalculator.calculatePayout(
+                askToBeFirst.toFloat(),
+                userSettingDto.sellerLevel.transactionFeePercentage
+            )
+
+            shoeVariants.add(
+                ShoeVariant(
+                    uuid = uuid,
+                    size = if (size.isBlank()) "-1" else size,
+                    highestBid = bidAskData.optInt("highestBid"),
+                    lowestAsk = bidAskData.optInt("lowestAsk"),
+                    numberOfAsks = state.optInt("numberOfAsks"),
+                    numberOfBids = state.optInt("numberOfBids"),
+                    askToBeFirst = askToBeFirst,
+                    totalPayout = totalPayout.round(2),
+                    totalPayoutPln = priceConverter.convertToPln(totalPayout, userSettingDto.currencyCode)?.round(2),
+                    salesLast72Hours = market.at("salesInformation").optInt("salesLast72Hours"),
+                    deadstockSold = market.at("deadStock").optInt("sold"),
+                )
+            )
+        }
+
+        return shoeVariants.toList()
     }
 }

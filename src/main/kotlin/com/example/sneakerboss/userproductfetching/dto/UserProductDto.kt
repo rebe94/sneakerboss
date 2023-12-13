@@ -5,7 +5,8 @@ import java.util.*
 
 data class UserProductDto(
     val userProductId: UUID,
-    val uuid: UUID,
+    val parentUuid: UUID,
+    val shoeVariantUuid: UUID,
     val title: String,
     val brand: String,
     val colorway: String,
@@ -20,7 +21,6 @@ data class UserProductDto(
     val numberOfBids: Int,
     val deadstockSold: Int,
     val salesLast72Hours: Int,
-    val parentId: String,
     val shoeSize: String,
     val askToBeFirst: Int?,
     val totalPayout: Float,

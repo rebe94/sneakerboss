@@ -76,12 +76,15 @@
     <tr th:each="product, rowNumber : ${userProducts}">
         <td th:text="${rowNumber.count}"/>
         <td>
-            <form th:action="@{/user/products/delete?userProductId={userProductId} (userProductId=${product.userProductId})}" method="post">
+            <!--<form th:action="@{/user/products/delete?userProductId={userProductId} (userProductId=${product.userProductId})}" method="post">
+                <button type="submit">delete</button>-->
+            <form th:action="@{/user/products/delete}" method="post">
+                <input type="hidden" name="userProductId" th:value="${product.userProductId}" />
                 <button type="submit">delete</button>
             </form>
         </td>
         <td>
-            <a th:href="@{/products?uuid={productUuid} (productUuid=${product.parentId})}"
+            <a th:href="@{/products?uuid={productUuid} (productUuid=${product.parentUuid})}"
             <span th:text="${product.title}"></span>
             </a>
         </td>

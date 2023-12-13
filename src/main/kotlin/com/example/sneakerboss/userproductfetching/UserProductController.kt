@@ -3,7 +3,6 @@ package com.example.sneakerboss.userproductfetching
 import com.example.sneakerboss.commons.captchaverifing.CaptchaRedirector
 import com.example.sneakerboss.extensions.round
 import com.example.sneakerboss.userproductfetching.dto.UserProductDto
-import com.example.sneakerboss.userproductfetching.dto.UserSettingDto
 import com.example.sneakerboss.usersettings.UserSettingService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -28,7 +27,7 @@ class UserProductController(
 ) {
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(UserProductController::class.java)
+        private val LOGGER = LoggerFactory.getLogger(this::class.java)
     }
 
     @GetMapping("/user/products")
@@ -55,14 +54,14 @@ class UserProductController(
     @PostMapping("/user/products/add")
     private fun addUserProduct(
         @AuthenticationPrincipal oauth2User: OAuth2User?,
-        @RequestParam productUuid: String,
+        @RequestParam parentProductUuid: String,
+        @RequestParam shoeVariantUuid: String,
         request: HttpServletRequest
     ): ModelAndView {
         val userEmail = oauth2User?.attributes?.getValue("email").toString()
-        userProductService.addUserProduct(UUID.fromString(productUuid), userEmail)
+        userProductService.addUserProduct(UUID.fromString(parentProductUuid), UUID.fromString(shoeVariantUuid), userEmail)
 
-        val referrer = request.getHeader("referer")
-        return ModelAndView("redirect:$referrer")
+        return ModelAndView("redirect:${request.getHeader("referer")}")
     }
 
     @PostMapping("/user/products/delete")
@@ -73,8 +72,7 @@ class UserProductController(
     ): ModelAndView {
         userProductService.deleteUserProduct(UUID.fromString(userProductId))
 
-        val referrer = request.getHeader("referer")
-        return ModelAndView("redirect:$referrer")
+        return ModelAndView("redirect:${request.getHeader("referer")}")
     }
 
     private fun addAttributes(page: Model, userProductDtos: List<UserProductDto>, sortBy: String) {
