@@ -23,11 +23,8 @@
         <th>title</th>
         <th>brand</th>
         <th>category</th>
-        <th>colorway</th>
         <th>styleId</th>
         <th>gender</th>
-        <th>releaseDate</th>
-        <th>retailPrice</th>
         <th>image</th>
     </tr>
     </thead>
@@ -40,11 +37,8 @@
         </td>
         <td th:text="${product.brand}"/>
         <td th:text="${product.category}"/>
-        <td th:text="${product.colorway}"/>
         <td th:text="${product.styleId}"/>
         <td th:text="${product.gender}"/>
-        <td th:text="${product.releaseDate}"/>
-        <td th:text="${product.retailPrice}"/>
         <td>
             <img th:src="${product.imageUrl}" alt="${product.title}" width="25%" height="25%"/>
         </td>

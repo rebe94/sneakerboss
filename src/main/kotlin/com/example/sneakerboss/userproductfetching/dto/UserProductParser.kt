@@ -17,7 +17,6 @@ class UserProductParser(
     private val priceConverter: PriceConverter,
     private val priceCalculator: PriceCalculator,
     private val askToBeFirstFetcher: AskToBeFirstFetcher,
-    private val matchingProductFetcher: MatchingProductFetcher,
     private val productDetailsParser: ProductDetailsParser
 ) {
     fun parseToUserProductDto(
@@ -34,10 +33,6 @@ class UserProductParser(
         val totalPayout =
             priceCalculator.calculatePayout(askToBeFirst.toFloat(), userSettingDto.sellerLevel.transactionFeePercentage)
 
-        val productUrlKey = productMarketDataJson.optString("urlKey")
-        val parentProductInfo = matchingProductFetcher.searchProductBy(productUrlKey)
-        val matchingProductDto = parentProductInfo.find { it.urlKey == productUrlKey }
-
         return UserProductDto(
             userProductId = userProductId,
             parentUuid = UUID.fromString(productMarketDataJson.optString("id")),
@@ -47,12 +42,9 @@ class UserProductParser(
             brand = productMarketDataJson.optString("brand"),
             numberOfAsks = shoeVariant?.numberOfAsks ?: -1,
             numberOfBids = shoeVariant?.numberOfBids ?: -1,
-            colorway = matchingProductDto?.colorway ?: "",
             styleId = productMarketDataJson.optString("styleId"),
             gender = productMarketDataJson.optString("gender"),
             highestBid = shoeVariant?.highestBid ?: -1,
-            releaseDate = matchingProductDto?.releaseDate ?: "",
-            retailPrice = matchingProductDto?.retailPrice ?: -1,
             imageUrl = URL(productMarketDataJson.at("media").optString("imageUrl")),
             lowestAsk = lowestAsk ?: -1,
             deadstockSold = shoeVariant?.deadstockSold ?: -1,

@@ -84,18 +84,15 @@ class UserProductController(
     }
 
     private fun calculateTotalNumbers(userProductDtos: List<UserProductDto>): Aggregation {
-        val retailPrice = userProductDtos.sumOf { it.retailPrice }
         val lowestAsk = userProductDtos.sumOf { it.lowestAsk }
         val totalPayout = userProductDtos.sumOf { it.totalPayout.toDouble() }.round(2)
         val totalPayoutPln = userProductDtos.sumOf { it.totalPayoutPln?.toDouble() ?: 0.0 }.round(2)
-        return Aggregation(retailPrice, lowestAsk, totalPayout, totalPayoutPln)
+        return Aggregation(lowestAsk, totalPayout, totalPayoutPln)
     }
 
     private fun sortUserProductsBy(sortByParam: String, userProducts: List<UserProductDto>) = when (sortByParam) {
         "styleId" -> userProducts?.sortedByDescending { it.styleId }
         "shoeSize" -> userProducts?.sortedByDescending { it.shoeSize?.replace(Regex("[a-zA-Z]"), "")?.toDouble() }
-        "releaseDate" -> userProducts?.sortedByDescending { it.releaseDate }
-        "retailPrice" -> userProducts?.sortedByDescending { it.retailPrice }
         "lowestAsk" -> userProducts?.sortedByDescending { it.lowestAsk }
         "askToBeFirst" -> userProducts?.sortedByDescending { it.askToBeFirst }
         "totalPayout" -> userProducts?.sortedByDescending { it.totalPayout }
@@ -109,7 +106,6 @@ class UserProductController(
     }
 
     data class Aggregation(
-        val retailPrice: Int,
         val lowestAsk: Int,
         val totalPayout: Double,
         val totalPayoutPln: Double

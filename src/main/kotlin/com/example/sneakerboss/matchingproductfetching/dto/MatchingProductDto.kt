@@ -9,10 +9,7 @@ data class MatchingProductDto(
     val title: String,
     val brand: String,
     val category: String,
-    val colorway: String,
     val styleId: String,
     val gender: String,
-    val releaseDate: String,
-    val retailPrice: Int,
     val imageUrl: URL
 )
