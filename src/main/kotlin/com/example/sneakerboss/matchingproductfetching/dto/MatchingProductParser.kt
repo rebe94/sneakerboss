@@ -28,11 +28,8 @@ class MatchingProductParser {
                     title = node.optString("title"),
                     brand = node.optString("brand"),
                     category = node.optString("productCategory"),
-                    //colorway = node.optString("colorway"),
                     styleId = node.optString("styleId"),
                     gender = node.optString("gender"),
-                    //releaseDate = node.optString("releaseDate"),
-                    //retailPrice = node.optInt("retailPrice"),
                     imageUrl = URL(media.optString("smallImageUrl"))
                 )
             )

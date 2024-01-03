@@ -2,7 +2,7 @@ package com.example.sneakerboss.productdetailsfetching
 
 import com.example.sneakerboss.commons.captchaverifing.CaptchaRedirector
 import com.example.sneakerboss.productdetailsfetching.dto.ProductDetailsDto
-import com.example.sneakerboss.productdetailsfetching.dto.ShoeVariant
+import com.example.sneakerboss.commons.productfetching.productmarkerdatafetching.ShoeVariant
 import com.example.sneakerboss.userproductfetching.dto.UserSettingDto
 import com.example.sneakerboss.usersettings.UserSettingService
 import com.example.sneakerboss.uservalidating.UserValidator

@@ -1,23 +1,20 @@
 package com.example.sneakerboss.userproductfetching.dto
 
-import com.example.sneakerboss.commons.productfetching.AskToBeFirstFetcher
 import com.example.sneakerboss.commons.productfetching.PriceCalculator
 import com.example.sneakerboss.commons.productfetching.currencyconverting.PriceConverter
+import com.example.sneakerboss.commons.productfetching.productmarkerdatafetching.ShoeVariantParser
 import com.example.sneakerboss.extensions.at
 import com.example.sneakerboss.extensions.round
-import com.example.sneakerboss.matchingproductfetching.MatchingProductFetcher
-import com.example.sneakerboss.productdetailsfetching.dto.ProductDetailsParser
+import java.net.URL
+import java.util.UUID
 import org.json.JSONObject
 import org.springframework.stereotype.Component
-import java.net.URL
-import java.util.*
 
 @Component
 class UserProductParser(
     private val priceConverter: PriceConverter,
     private val priceCalculator: PriceCalculator,
-    private val askToBeFirstFetcher: AskToBeFirstFetcher,
-    private val productDetailsParser: ProductDetailsParser
+    private val shoeVariantParser: ShoeVariantParser
 ) {
     fun parseToUserProductDto(
         productMarketDataJson: JSONObject,
@@ -25,11 +22,10 @@ class UserProductParser(
         shoeVariantUuid: UUID,
         userSettingDto: UserSettingDto
     ): UserProductDto {
-        val shoeVariant = productDetailsParser.getSizeVariants(productMarketDataJson, userSettingDto)
+        val shoeVariant = shoeVariantParser.getShoeVariants(productMarketDataJson, userSettingDto)
             .find { it.uuid == shoeVariantUuid }
         val lowestAsk = shoeVariant?.lowestAsk
-        val askToBeFirst =
-            askToBeFirstFetcher.getAskToBeFirst(shoeVariantUuid, userSettingDto.currencyCode, userSettingDto.region)
+        val askToBeFirst = shoeVariant?.askToBeFirst ?: 0
         val totalPayout =
             priceCalculator.calculatePayout(askToBeFirst.toFloat(), userSettingDto.sellerLevel.transactionFeePercentage)
 

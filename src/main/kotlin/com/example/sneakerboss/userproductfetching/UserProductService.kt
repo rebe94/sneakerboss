@@ -1,6 +1,6 @@
 package com.example.sneakerboss.userproductfetching
 
-import com.example.sneakerboss.commons.productfetching.ProductMarketDataFetcher
+import com.example.sneakerboss.commons.productfetching.productmarkerdatafetching.ProductMarketDataFetcher
 import com.example.sneakerboss.userproductfetching.dto.UserProductDto
 import com.example.sneakerboss.usersettings.UserSettingService
 import com.example.sneakerboss.userproductfetching.dto.UserProductParser

@@ -18,13 +18,11 @@ class HttpRequestExecuter(private val restTemplate: RestTemplate) {
         String()
     )
 
-    fun executePostRequest(uri: String, headers: HttpHeaders, requestBody: String): ResponseEntity<String> {
-        val httpEntity = HttpEntity(requestBody, headers)
-        return restTemplate.exchange(
+    fun executePostRequest(uri: String, headers: HttpHeaders, requestBody: String): ResponseEntity<String> =
+        restTemplate.exchange(
             uri,
             HttpMethod.POST,
-            httpEntity,
+            HttpEntity(requestBody, headers),
             String()
         )
-    }
 }

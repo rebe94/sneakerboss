@@ -1,8 +1,9 @@
-package com.example.sneakerboss.commons.productfetching
+package com.example.sneakerboss.commons.productfetching.productmarkerdatafetching
 
 import com.example.sneakerboss.commons.httprequestexecuting.HttpRequestExecuter
 import com.example.sneakerboss.commons.productfetching.currencyconverting.components.CurrencyCode
 import com.example.sneakerboss.commons.productfetching.currencyconverting.components.Region
+import com.example.sneakerboss.extensions.at
 import com.example.sneakerboss.extensions.getTextFromResource
 import com.example.sneakerboss.extensions.substitute
 import java.util.UUID
@@ -27,11 +28,8 @@ class ProductMarketDataFetcher(
                 "COUNTRY_CODE" to region.abbreviation.uppercase()
             )
         )
-
-        val headers = getHeaders()
-        val response = httpRequestExecuter.executePostRequest(FIND_PRODUCT_BASE_URL, headers, requestBody)
-        val json = JSONObject(response.body)
-        return json.optJSONObject("data").optJSONObject("product")
+        val response = httpRequestExecuter.executePostRequest(FIND_PRODUCT_BASE_URL, getHeaders(), requestBody)
+        return JSONObject(response.body).at("data").at("product")
     }
 
     private fun getHeaders(): HttpHeaders {

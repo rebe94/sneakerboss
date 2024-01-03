@@ -2,7 +2,7 @@ package com.example.sneakerboss.productdetailsfetching
 
 import com.example.sneakerboss.productdetailsfetching.dto.ProductDetailsDto
 import com.example.sneakerboss.productdetailsfetching.dto.ProductDetailsParser
-import com.example.sneakerboss.commons.productfetching.ProductMarketDataFetcher
+import com.example.sneakerboss.commons.productfetching.productmarkerdatafetching.ProductMarketDataFetcher
 import com.example.sneakerboss.userproductfetching.dto.UserSettingDto
 import org.springframework.stereotype.Service
 import java.util.*
