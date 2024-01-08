@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service
 @Service
 class UserValidator(
     private val userRepository: UserRepository,
-    private val userSettingRepository: UserSettingRepository
+    private val userSettingRepository: UserSettingRepository,
+    private val emailFormatValidator: EmailFormatValidator
 ) {
 
     fun validUser(userEmail: String): User {
+        emailFormatValidator.validEmailFormat(userEmail)
         val user = userRepository.findByEmail(userEmail)
         val validUser = user ?: userRepository.save(User.create(userEmail))
         val userSetting = userSettingRepository.findByUserId(validUser.id)

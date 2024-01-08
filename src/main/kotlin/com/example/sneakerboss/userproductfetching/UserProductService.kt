@@ -1,6 +1,7 @@
 package com.example.sneakerboss.userproductfetching
 
 import com.example.sneakerboss.commons.productfetching.productmarkerdatafetching.ProductMarketDataFetcher
+import com.example.sneakerboss.extensions.at
 import com.example.sneakerboss.userproductfetching.dto.UserProductDto
 import com.example.sneakerboss.usersettings.UserSettingService
 import com.example.sneakerboss.userproductfetching.dto.UserProductParser
@@ -32,11 +33,11 @@ class UserProductService(
         val userProductDtos = mutableListOf<UserProductDto>()
 
         userProductRepository.findAllByUserId(user.id).forEach {
-            val productMarketDataJson = productMarketDataFetcher.findProductMarketDataBy(
+            val productMarketDataJson = productMarketDataFetcher.getProductMarketDataBy(
                 it.parentProductUuid,
                 userSettingDto.currencyCode,
                 userSettingDto.region
-            ) ?: JSONObject()
+            ).at("data").optJSONObject("product")
             val userProductDto =
                 userProductParser.parseToUserProductDto(
                     productMarketDataJson,

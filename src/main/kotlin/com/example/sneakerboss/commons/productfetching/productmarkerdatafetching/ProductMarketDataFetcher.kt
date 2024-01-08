@@ -3,7 +3,6 @@ package com.example.sneakerboss.commons.productfetching.productmarkerdatafetchin
 import com.example.sneakerboss.commons.httprequestexecuting.HttpRequestExecuter
 import com.example.sneakerboss.commons.productfetching.currencyconverting.components.CurrencyCode
 import com.example.sneakerboss.commons.productfetching.currencyconverting.components.Region
-import com.example.sneakerboss.extensions.at
 import com.example.sneakerboss.extensions.getTextFromResource
 import com.example.sneakerboss.extensions.substitute
 import java.util.UUID
@@ -20,16 +19,16 @@ class ProductMarketDataFetcher(
         private const val FIND_PRODUCT_BASE_URL = "https://stockx.com/api/p/e"
     }
 
-    fun findProductMarketDataBy(uuid: UUID, currencyCode: CurrencyCode, region: Region): JSONObject? {
-        val requestBody = getTextFromResource("getMarketDataRequestBody.json").substitute(
+    fun getProductMarketDataBy(stockxProductUuid: UUID, currencyCode: CurrencyCode, region: Region): JSONObject {
+        val requestBody = getTextFromResource("stockxApiRequests/getMarketData.json").substitute(
             mapOf(
-                "PRODUCT_UUID" to uuid.toString(),
+                "PRODUCT_UUID" to stockxProductUuid.toString(),
                 "CURRENCY_CODE" to currencyCode.toString(),
                 "COUNTRY_CODE" to region.abbreviation.uppercase()
             )
         )
         val response = httpRequestExecuter.executePostRequest(FIND_PRODUCT_BASE_URL, getHeaders(), requestBody)
-        return JSONObject(response.body).at("data").at("product")
+        return JSONObject(response.body)
     }
 
     private fun getHeaders(): HttpHeaders {

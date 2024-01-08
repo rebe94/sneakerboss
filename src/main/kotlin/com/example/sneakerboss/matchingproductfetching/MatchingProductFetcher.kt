@@ -23,7 +23,7 @@ class MatchingProductFetcher(
     }
 
     fun searchProductBy(key: String): List<MatchingProductDto> {
-        val requestBody = getTextFromResource("getSearchResultsRequestBody.json").substitute(
+        val requestBody = getTextFromResource("stockxApiRequests/getSearchResults.json").substitute(
             mapOf(
                 "KEY" to key.replace(" ", "+"),
                 "RESULT_LIMIT" to LIMIT_FOUND_PRODUCTS.toString()

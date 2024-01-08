@@ -1,0 +1,142 @@
+{
+  "data": {
+    "product": {
+      "brand": "Nike",
+      "styleId": "DJ0950-116",
+      "gender": "men",
+      "id": "```UUID```",
+      "urlKey": "nike-dunk-low-off-white-lot-31",
+      "listingType": "STANDARD",
+      "title": "```TITLE```",
+      "uuid": "```UUID```",
+      "contentGroup": "sneakers",
+      "market": {
+        "deadStock": {
+          "sold": ```DEADSTOCK_SOLD```
+        },
+        "bidAskData": {
+          "highestBid": 497,
+          "highestBidSize": "7",
+          "lowestAsk": 439,
+          "lowestAskSize": "8.5"
+        },
+        "state": {
+          "lowestAsk": {
+            "amount": 439
+          },
+          "highestBid": {
+            "amount": 497
+          },
+          "numberOfCustodialAsks": 0,
+          "numberOfAsks": ```NUMBER_OF_ASKS```,
+          "numberOfBids": ```NUMBER_OF_BIDS```,
+          "lowestCustodialAsk": null
+        },
+        "statistics": {
+          "lastSale": {
+            "amount": 711,
+            "changePercentage": 1.156923,
+            "changeValue": 382,
+            "sameFees": null
+          }
+        }
+      },
+      "variants": [
+        {
+          "id": "```FIRST_SHOE_VARIANT_UUID```",
+          "pricingGuidance": {
+            "sellingGuidance": {
+              "earnMore": ```FIRST_SHOE_VARIANT_ASK_TO_BE_FIRST```
+            }
+          },
+          "market": {
+            "deadStock": {
+              "sold": ```FIRST_SHOE_VARIANT_DEADSTOCK_SOLD```
+            },
+            "bidAskData": {
+              "highestBid": ```FIRST_SHOE_VARIANT_HIGHEST_BID```,
+              "highestBidSize": "```FIRST_SHOE_VARIANT_SIZE```",
+              "lowestAsk": ```FIRST_SHOE_VARIANT_LOWEST_ASK```,
+              "lowestAskSize": "7.5"
+            },
+            "state": {
+              "lowestAsk": {
+                "amount": 863
+              },
+              "highestBid": {
+                "amount": 315
+              },
+              "numberOfCustodialAsks": 0,
+              "numberOfAsks": ```FIRST_SHOE_VARIANT_NUMBER_OF_ASKS```,
+              "numberOfBids": ```FIRST_SHOE_VARIANT_NUMBER_OF_BIDS```,
+              "lowestCustodialAsk": null
+            },
+            "salesInformation": {
+              "lastSale": 504,
+              "salesLast72Hours": ```FIRST_SHOE_VARIANT_SALES_LAST_72_HOURS```
+            },
+            "statistics": {
+              "lastSale": {
+                "amount": 504,
+                "changePercentage": 0.377539,
+                "changeValue": 138,
+                "sameFees": null
+              }
+            }
+          }
+        },
+        {
+          "id": "```SECOND_SHOE_VARIANT_UUID```",
+          "pricingGuidance": {
+            "sellingGuidance": {
+              "earnMore": ```SECOND_SHOE_VARIANT_ASK_TO_BE_FIRST```
+            }
+          },
+          "market": {
+            "deadStock": {
+              "sold": ```SECOND_SHOE_VARIANT_DEADSTOCK_SOLD```
+            },
+            "bidAskData": {
+              "highestBid": ```SECOND_SHOE_VARIANT_HIGHEST_BID```,
+              "highestBidSize": "```SECOND_SHOE_VARIANT_SIZE```",
+              "lowestAsk": ```SECOND_SHOE_VARIANT_LOWEST_ASK```,
+              "lowestAskSize": "8"
+            },
+            "state": {
+              "lowestAsk": {
+                "amount": 478
+              },
+              "highestBid": {
+                "amount": 333
+              },
+              "numberOfCustodialAsks": 0,
+              "numberOfAsks": ```SECOND_SHOE_VARIANT_NUMBER_OF_ASKS```,
+              "numberOfBids": ```SECOND_SHOE_VARIANT_NUMBER_OF_BIDS```,
+              "lowestCustodialAsk": null
+            },
+            "salesInformation": {
+              "lastSale": 334,
+              "salesLast72Hours": ```SECOND_SHOE_VARIANT_SALES_LAST_72_HOURS```
+            },
+            "statistics": {
+              "lastSale": {
+                "amount": 334,
+                "changePercentage": -0.166316,
+                "changeValue": -66,
+                "sameFees": null
+              }
+            }
+          }
+        }
+      ],
+      "sizeDescriptor": "Size",
+      "productCategory": "sneakers",
+      "media": {
+        "imageUrl": "https://images.stockx.com/images/Nike-Dunk-Low-Off-White-Lot-31-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color&updated_at=1636047231"
+      },
+      "lockBuying": false,
+      "lockSelling": false,
+      "minimumBid": 23
+    }
+  }
+}

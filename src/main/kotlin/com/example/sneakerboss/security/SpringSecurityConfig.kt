@@ -15,8 +15,9 @@ class SpringSecurityConfig : WebSecurityConfigurerAdapter() {
             .antMatchers("/user/**").authenticated()
             //.antMatchers("//**").hasAnyRole("USER")
             //.anyRequest().authenticated()
-            .and()
+                .and()
             .oauth2Login()
+                //.defaultSuccessUrl("/home")
             .and()
             .logout()
                 .logoutUrl("/logout") // specify the logout URL

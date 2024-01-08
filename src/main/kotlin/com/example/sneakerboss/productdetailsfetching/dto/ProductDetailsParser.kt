@@ -19,8 +19,8 @@ class ProductDetailsParser(
         return ProductDetailsDto(
             uuid = productUuid,
             title = json.getString("title"),
-            numberOfAsks = state.optInt("numberOfBids"),
-            numberOfBids = state.optInt("numberOfAsks"),
+            numberOfAsks = state.optInt("numberOfAsks"),
+            numberOfBids = state.optInt("numberOfBids"),
             deadstockSold = market.at("deadStock").optInt("sold"),
             shoeVariants = shoeVariantParser.getShoeVariants(json, userSettingDto)
         )

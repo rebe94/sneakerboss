@@ -1,0 +1,76 @@
+{
+  "data": {
+    "browse": {
+      "categories": [
+        {
+          "id": "sneakers",
+          "name": null,
+          "count": 182
+        }
+      ],
+      "results": {
+        "edges": [
+          {
+            "objectId": "8d8fa98b-7777-441b-b927-917ac5d3b255",
+            "node": {
+              "title": "```TITLE```",
+              "styleId": "```STYLE_ID```",
+              "gender": "```GENDER```",
+              "id": "```UUID```",
+              "listingType": "STANDARD",
+              "urlKey": "```URL_KEY```",
+              "primaryTitle": "Nike Dunk Low",
+              "secondaryTitle": "Off-White Lot 31",
+              "media": {
+                "smallImageUrl": "```IMAGE_URL```"
+              },
+              "brand": "```BRAND```",
+              "productCategory": "```CATEGORY```",
+              "market": {
+                "state": {
+                  "numberOfCustodialAsks": 0,
+                  "lowestCustodialAsk": null
+                }
+              },
+              "favorite": null
+            }
+          },
+          {
+            "objectId": "0bc3cb43-7431-487c-bea2-f9d3271e2a49",
+            "node": {
+              "title": "Nike SB Dunk Low Supreme Rammellzee",
+              "styleId": "FD8778-001",
+              "gender": "men",
+              "id": "0bc3cb43-7431-487c-bea2-f9d3271e2a49",
+              "listingType": "STANDARD",
+              "urlKey": "nike-sb-dunk-low-supreme-rammellzee",
+              "primaryTitle": "Nike SB Dunk Low",
+              "secondaryTitle": "Supreme Rammellzee",
+              "media": {
+                "smallImageUrl": "https://images.stockx.com/images/Nike-SB-Dunk-Low-Supreme-Rammellzee-Product.jpg?fit=fill&bg=FFFFFF&w=300&h=214&fm=webp&auto=compress&q=90&dpr=2&trim=color&updated_at=1690180104"
+              },
+              "brand": "Nike",
+              "productCategory": "sneakers",
+              "market": {
+                "state": {
+                  "numberOfCustodialAsks": 0,
+                  "lowestCustodialAsk": null
+                }
+              },
+              "favorite": null
+            }
+          }
+        ],
+        "pageInfo": {
+          "limit": 10,
+          "page": 1,
+          "pageCount": null,
+          "queryId": "292a150342d8518be8f885d8df0e0278",
+          "queryIndex": "PRODUCTION_PG_FEATURED_DESC",
+          "total": 752
+        }
+      },
+      "sort": null
+    }
+  }
+}
