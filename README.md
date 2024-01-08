@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="https://sneakerboss-rebe94.koyeb.app/"><img src="src/main/resources/image.jpg" alt="logo" border="0" style="width:30%;"> </a>
+    <a href="https://sneakerboss-rebe94.koyeb.app/"><img src="https://i.ibb.co/gwGX9Cq/image.jpg" alt="logo" border="0" style="width:30%;"> </a>
 </h1>
 <h3 align="center">Sneakerboss - monitor sneakers on the most popular streetwear market StockX </h3>
 <p align="center">
@@ -9,7 +9,7 @@ Check it out, main app's source code on Github: <a href="https://github.com/rebe
 
 
 
-[Sneakerboss](https://sneakerboss-rebe94.koyeb.app/) project was created in order to help my friends in monitoring products from StockX market.
+[Sneakerboss](https://sneakerboss-rebe94.koyeb.app/) project was created in order to help my friends in monitoring products from [StockX](https://stockx.com/) market.
 
 ​	The web application allows to search streetwear products with its current market price and also monitor them. The application are built on `modular architecture` with entrypoint for every module which is `Facade design pattern`. The application is covered by BDD tests to provide the system working assurance.
 Under the hood sneakerboss app calls `StockX API` and official `polish central bank NBP API` to get exchange currency rate.   
