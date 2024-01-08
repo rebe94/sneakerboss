@@ -1,20 +1,14 @@
 package com.example.sneakerboss.productdetailsfetching.dto
 
-import java.util.*
+import com.example.sneakerboss.commons.productfetching.productmarkerdatafetching.ShoeVariant
+import java.util.UUID
 
 data class ProductDetailsDto(
     val uuid: UUID,
     val title: String,
-    val lowestAsk: Int,
     val numberOfAsks: Int,
-    val highestBid: Int,
     val numberOfBids: Int,
     val deadstockSold: Int,
-    val salesLast72Hours: Int,
-    val parentId: String?,
-    val shoeSize: String?,
-    val children: List<ProductDetailsDto>?,
-    val askToBeFirst: Float,
-    val totalPayout: Float,
-    val totalPayoutPln: Float?
+    val shoeVariants: List<ShoeVariant>
 )
+

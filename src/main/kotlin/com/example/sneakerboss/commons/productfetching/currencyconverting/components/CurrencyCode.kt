@@ -2,5 +2,6 @@ package com.example.sneakerboss.commons.productfetching.currencyconverting.compo
 
 enum class CurrencyCode {
     EUR,
-    PLN
+    GBP,
+    USD
 }

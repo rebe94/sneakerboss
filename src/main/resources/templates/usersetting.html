@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User settings</title>
+    <style>
+        header {
+            background-color: #1a651a;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin: auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: white;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        form {
+            margin-bottom: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="submit"] {
+            background-color: #1a651a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2f651a;
+        }
+
+        .go-to-homepage {
+            display: inline-block;
+            background-color: #1a651a;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .go-to-homepage:hover {
+            background-color: #2f651a;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Sneaker Boss</h1>
+    <p>Here You can change user settings</p>
+</header>
+<div class="container">
+    <h2>User settings</h2>
+
+    <form method="post" th:action="@{/user/settings/save}" th:object="${userSetting}">
+        <div class="form-group">
+            <label for="sellerLevel">Seller level</label>
+            <select id="sellerLevel" required th:field="*{sellerLevel}">
+                <option value="" hidden>Select seller level</option>
+                <option th:each="value : ${sellerLevels}" th:value="${value}"
+                        th:selected="${value == userSetting.sellerLevel}" th:text="${value}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="region">Region</label>
+            <select id="region" required th:field="*{region}">
+                <option value="" hidden>Select region</option>
+                <option th:each="value : ${regions}" th:value="${value}" th:selected="${value == userSetting.region}"
+                        th:text="${value}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="currencyCode">Currency code</label>
+            <select id="currencyCode" required th:field="*{currencyCode}" class="form-control ">
+                <option value="" hidden>Select currency code</option>
+                <option th:each="value : ${currencyCodes}" th:value="${value}"
+                        th:selected="${value == userSetting.currencyCode}" th:text="${value}"></option>
+            </select>
+        </div>
+        <input type="submit" class="btn btn-custom" value="Save settings">
+            <a th:href="@{/}" class="go-to-homepage">Go to homepage</a>
+    </form>
+</div>
+</body>
+</html>

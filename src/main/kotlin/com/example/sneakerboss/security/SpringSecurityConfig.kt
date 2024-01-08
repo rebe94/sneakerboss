@@ -12,10 +12,12 @@ class SpringSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity
             .authorizeRequests()
-            .antMatchers("/userproducts").hasAnyRole("USER")
+            .antMatchers("/user/**").authenticated()
+            //.antMatchers("//**").hasAnyRole("USER")
             //.anyRequest().authenticated()
-            .and()
+                .and()
             .oauth2Login()
+                //.defaultSuccessUrl("/home")
             .and()
             .logout()
                 .logoutUrl("/logout") // specify the logout URL

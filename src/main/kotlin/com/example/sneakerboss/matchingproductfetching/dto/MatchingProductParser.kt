@@ -7,10 +7,10 @@ import java.net.URL
 import java.util.*
 
 @Component
-class MatchingProductParser() {
+class MatchingProductParser {
 
     companion object {
-        private const val LIMIT_FOUND_PRODUCTS = 10
+        const val LIMIT_FOUND_PRODUCTS = 10
     }
 
     fun parseToMatchingProducts(matchingProducts: JSONArray): List<MatchingProductDto> {
@@ -19,18 +19,17 @@ class MatchingProductParser() {
             if (matchingProducts.length() < LIMIT_FOUND_PRODUCTS) matchingProducts.length() else LIMIT_FOUND_PRODUCTS
         for (i in 0 until limit) {
             val it: JSONObject = matchingProducts.optJSONObject(i)
-            val media = it.optJSONObject("media")
+            val node = it.optJSONObject("node")
+            val media = node.optJSONObject("media")
             matchingProductsListDto.add(
                 MatchingProductDto(
-                    uuid = UUID.fromString(it.optString("uuid")),
-                    title = it.optString("title"),
-                    brand = it.optString("brand"),
-                    category = it.optString("category"),
-                    colorway = it.optString("colorway"),
-                    styleId = it.optString("styleId"),
-                    gender = it.optString("gender"),
-                    releaseDate = it.optString("releaseDate"),
-                    retailPrice = it.optInt("retailPrice"),
+                    uuid = UUID.fromString(it.optString("objectId")),
+                    urlKey = node.optString("urlKey"),
+                    title = node.optString("title"),
+                    brand = node.optString("brand"),
+                    category = node.optString("productCategory"),
+                    styleId = node.optString("styleId"),
+                    gender = node.optString("gender"),
                     imageUrl = URL(media.optString("smallImageUrl"))
                 )
             )

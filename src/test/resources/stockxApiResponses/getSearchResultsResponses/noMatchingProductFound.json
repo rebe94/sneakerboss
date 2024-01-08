@@ -1,0 +1,19 @@
+{
+  "data": {
+    "browse": {
+      "categories": null,
+      "results": {
+        "edges": [],
+        "pageInfo": {
+          "limit": 10,
+          "page": 1,
+          "pageCount": null,
+          "queryId": "f18c195f07a4e9f487c1415dadd69024",
+          "queryIndex": "PRODUCTION_PG_FEATURED_DESC",
+          "total": 0
+        }
+      },
+      "sort": null
+    }
+  }
+}

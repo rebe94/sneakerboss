@@ -2,51 +2,52 @@ package com.example.sneakerboss.userproductfetching.dto
 
 import com.example.sneakerboss.commons.productfetching.PriceCalculator
 import com.example.sneakerboss.commons.productfetching.currencyconverting.PriceConverter
+import com.example.sneakerboss.commons.productfetching.productmarkerdatafetching.ShoeVariantParser
+import com.example.sneakerboss.extensions.at
 import com.example.sneakerboss.extensions.round
-import com.example.sneakerboss.commons.productfetching.ProductFetcher
+import java.net.URL
+import java.util.UUID
 import org.json.JSONObject
 import org.springframework.stereotype.Component
-import java.net.URL
-import java.util.*
 
 @Component
 class UserProductParser(
     private val priceConverter: PriceConverter,
-    private val priceCalculator: PriceCalculator
+    private val priceCalculator: PriceCalculator,
+    private val shoeVariantParser: ShoeVariantParser
 ) {
-    fun parseToUserProductDto(jsonObject: JSONObject, userProductId: UUID): UserProductDto = createUserProductDto(jsonObject, userProductId)
-
-    private fun createUserProductDto(
-        jsonObject: JSONObject,
-        userProductId: UUID
+    fun parseToUserProductDto(
+        productMarketDataJson: JSONObject,
+        userProductId: UUID,
+        shoeVariantUuid: UUID,
+        userSettingDto: UserSettingDto
     ): UserProductDto {
-        val media = jsonObject.getJSONObject("media")
-        val market = jsonObject.getJSONObject("market")
-        val lowestAsk = market.getInt("lowestAsk")
-        val askToBeFirst = priceCalculator.calculateLowestAskToBeFirst(lowestAsk.toFloat())
-        val totalPayout = priceCalculator.calculatePayout(askToBeFirst)
+        val shoeVariant = shoeVariantParser.getShoeVariants(productMarketDataJson, userSettingDto)
+            .find { it.uuid == shoeVariantUuid }
+        val lowestAsk = shoeVariant?.lowestAsk
+        val askToBeFirst = shoeVariant?.askToBeFirst ?: 0
+        val totalPayout =
+            priceCalculator.calculatePayout(askToBeFirst.toFloat(), userSettingDto.sellerLevel.transactionFeePercentage)
+
         return UserProductDto(
             userProductId = userProductId,
-            uuid = UUID.fromString(jsonObject.optString("uuid")),
-            title = jsonObject.optString("title"),
-            brand = jsonObject.optString("brand"),
-            colorway = jsonObject.optString("colorway"),
-            styleId = jsonObject.optString("styleId"),
-            gender = jsonObject.optString("gender"),
-            releaseDate = jsonObject.optString("releaseDate"),
-            retailPrice = jsonObject.optInt("retailPrice"),
-            imageUrl = URL(media.optString("smallImageUrl")),
-            lowestAsk = lowestAsk,
-            numberOfAsks = market.optInt("numberOfAsks"),
-            highestBid = market.optInt("highestBid"),
-            numberOfBids = market.optInt("numberOfBids"),
-            deadstockSold = market.optInt("deadstockSold"),
-            salesLast72Hours = market.optInt("salesLast72Hours"),
-            parentId = jsonObject.optString("parentId"),
-            shoeSize = jsonObject.optString("shoeSize"),
-            askToBeFirst = askToBeFirst.round(2),
+            parentUuid = UUID.fromString(productMarketDataJson.optString("id")),
+            shoeVariantUuid = shoeVariantUuid,
+            shoeSize = shoeVariant?.size ?: "",
+            title = productMarketDataJson.optString("title"),
+            brand = productMarketDataJson.optString("brand"),
+            numberOfAsks = shoeVariant?.numberOfAsks ?: -1,
+            numberOfBids = shoeVariant?.numberOfBids ?: -1,
+            styleId = productMarketDataJson.optString("styleId"),
+            gender = productMarketDataJson.optString("gender"),
+            highestBid = shoeVariant?.highestBid ?: -1,
+            imageUrl = URL(productMarketDataJson.at("media").optString("imageUrl")),
+            lowestAsk = lowestAsk ?: -1,
+            deadstockSold = shoeVariant?.deadstockSold ?: -1,
+            salesLast72Hours = shoeVariant?.salesLast72Hours ?: -1,
+            askToBeFirst = askToBeFirst,
             totalPayout = totalPayout.round(2),
-            totalPayoutPln = priceConverter.convertToPln(totalPayout, ProductFetcher.CURRENCY_CODE)?.round(2)
+            totalPayoutPln = priceConverter.convertToPln(totalPayout, userSettingDto.currencyCode)?.round(2)
         )
     }
 }

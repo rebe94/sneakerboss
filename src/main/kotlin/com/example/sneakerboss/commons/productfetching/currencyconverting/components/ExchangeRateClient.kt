@@ -19,7 +19,7 @@ class ExchangeRateClient(private val httpRequestExecuter: HttpRequestExecuter) :
         val headers = getHeaders()
         try {
             val response =
-                httpRequestExecuter.executeHttpGetRequest(EXCHANGE_RATE_SERVICE_BASE_URI + currencyCode, headers)
+                httpRequestExecuter.executeGetRequest(EXCHANGE_RATE_SERVICE_BASE_URI + currencyCode, headers)
             return getRate(response)
         } catch (ex: Exception) {
             return null

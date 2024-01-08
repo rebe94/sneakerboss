@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	id("org.springframework.boot") version "2.7.7"
@@ -16,10 +15,6 @@ repositories {
 	mavenCentral()
 }
 
-/*tasks.withType<BootJar> {
-	archiveFileName.set("sneakerboss-app.jar")
-}*/
-
 extra["springCloudVersion"] = "2021.0.5"
 
 dependencies {
@@ -34,11 +29,13 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
 	//implementation("com.fasterxml.jackson.core:jackson-core:2.14.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.assertj:assertj-core:3.24.2")
 	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
 	//implementation("org.slf4j:slf4j-api:2.0.6")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
 dependencyManagement {

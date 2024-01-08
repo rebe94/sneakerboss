@@ -19,7 +19,7 @@ class MatchingProductFetcherController(
 ) {
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(MatchingProductFetcherController::class.java)
+        private val LOGGER = LoggerFactory.getLogger(this::class.java)
     }
 
     @GetMapping("/", "/home")
@@ -44,6 +44,6 @@ class MatchingProductFetcherController(
         }
 
         page.addAttribute("matchingProducts", matchingProductDtos)
-        return "matchingproductfetcher.html"
+        return "matchingproduct.html"
     }
 }

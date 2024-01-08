@@ -9,9 +9,16 @@ data class UserProduct(
     @Id
     val id: UUID,
     val userId: UUID,
-    val productUuid: UUID
+    val parentProductUuid: UUID,
+    val shoeVariantUuid: UUID
 ) {
     companion object {
-        fun create(productUuid: UUID, userId: UUID) = UserProduct(UUID.randomUUID(), userId, productUuid)
+        fun create(parentProductUuid: UUID, shoeVariantUuid: UUID, userId: UUID) =
+            UserProduct(
+                id = UUID.randomUUID(),
+                userId = userId,
+                parentProductUuid = parentProductUuid,
+                shoeVariantUuid = shoeVariantUuid
+            )
     }
 }
