@@ -8,7 +8,6 @@
 Check it out, main app's source code on Github: <a href="https://github.com/rebe94/sneakerboss">https://github.com/rebe94/sneakerboss</a></p>
 
 
-
 [Sneakerboss](https://sneakerboss-rebe94.koyeb.app/) project was created in order to help my friends in monitoring products from [StockX](https://stockx.com/) market.
 
 ​	The web application allows to search streetwear products with its current market price and also monitor them. The application are built on `modular architecture` with entrypoint for every module which is `Facade design pattern`. The application is covered by BDD tests to provide the system working assurance.
@@ -18,8 +17,12 @@ The project is being constantly developed.
 
 # Tech stack
 
-- Backend: `Kotlin`, `SpringBoot` - (`Web`, `Data`, `Test`)
+- Backend: `Kotlin`, `SpringBoot` - `Web`, `Data`, `Test`
   - NoSQL Database - `MongoDB`
   - Testing libraries - `JUnit`, `Mockito`, `AssertJ`
 - Simple Frontend: `Thymeleaf`
 - Deploying: `Docker`, `MongoDB Atlas`, `Koyeb web hosting`
+
+# Demo user
+`gmail login`: sneakerboss.client@gmail.com
+`gmail password`: sneakerbosspassword
