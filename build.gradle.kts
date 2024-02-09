@@ -36,6 +36,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("io.springfox:springfox-boot-starter:3.0.0") // http://localhost:8080/swagger-ui/index.html
 }
 
 dependencyManagement {
